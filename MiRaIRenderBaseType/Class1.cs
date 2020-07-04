@@ -9,7 +9,7 @@ using Math = System.MathF;
 namespace MiRaIRenderBaseType {
 
 
-	public class Render {
+	public class PathTraceRender {
 		private int width = 1280, height = 720;
 		private Float fovHorizon = 135;
 		private Scene scene;
