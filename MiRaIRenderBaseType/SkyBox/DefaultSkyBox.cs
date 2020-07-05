@@ -1,8 +1,4 @@
-﻿//using System.Numerics;
-
-//using Vector3f = System.Numerics.Vector3;
-
-namespace MiRaIRenderBaseType.Skybox {
+﻿namespace MiRaIRender.BaseType.Skybox {
 	public class DefaultSkyBox : ISkyBoxAble {
 		private Color _c;
 		public Color Color {

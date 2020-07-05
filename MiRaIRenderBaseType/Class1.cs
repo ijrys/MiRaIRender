@@ -1,12 +1,12 @@
 ﻿//using System.Numerics;
 
 //using Vector3f = System.Numerics.Vector3;
-using MiRaIRenderBaseType.SceneObject;
+using MiRaIRender.BaseType.SceneObject;
 using System;
 using Float = System.Single;
 using Math = System.MathF;
 
-namespace MiRaIRenderBaseType {
+namespace MiRaIRender.BaseType {
 
 
 	public class PathTraceRender {

@@ -3,7 +3,7 @@
 /// <summary>
 /// 材质相关类型
 /// </summary>
-namespace MiRaIRenderBaseType.Materials {
+namespace MiRaIRender.BaseType.Materials {
 	public interface IMaterialMapAble {
 		public Color Color(Vector2f position);
 	}

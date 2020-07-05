@@ -1,9 +1,6 @@
-﻿//using System.Numerics;
+﻿using Float = System.Single;
 
-//using Vector3f = System.Numerics.Vector3;
-using Float = System.Single;
-
-namespace MiRaIRenderBaseType.SceneObject {
+namespace MiRaIRender.BaseType.SceneObject {
 	public abstract class RenderObject : IRenderObjectAble {
 
 		protected Bounds3 _boundBox;

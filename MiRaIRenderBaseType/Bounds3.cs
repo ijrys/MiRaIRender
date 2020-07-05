@@ -1,9 +1,6 @@
-﻿using System;
-//using System.Numerics;
+﻿using Math = System.MathF;
 
-//using Vector3f = System.Numerics.Vector3;
-
-namespace MiRaIRenderBaseType {
+namespace MiRaIRender.BaseType {
 	/// <summary>
 	/// 三维包围盒
 	/// </summary>
@@ -15,8 +12,8 @@ namespace MiRaIRenderBaseType {
 			pMin = pMax = p;
 		}
 		public Bounds3(Vector3f p1, Vector3f p2) {
-			pMin = new Vector3f(MathF.Min(p1.x, p2.x), MathF.Min(p1.y, p2.y), MathF.Min(p1.z, p2.z));
-			pMax = new Vector3f(MathF.Max(p1.x, p2.x), MathF.Max(p1.y, p2.y), MathF.Max(p1.z, p2.z));
+			pMin = new Vector3f(Math.Min(p1.x, p2.x), Math.Min(p1.y, p2.y), Math.Min(p1.z, p2.z));
+			pMax = new Vector3f(Math.Max(p1.x, p2.x), Math.Max(p1.y, p2.y), Math.Max(p1.z, p2.z));
 		}
 
 		/// <summary>
@@ -59,8 +56,8 @@ namespace MiRaIRenderBaseType {
 		/// <returns></returns>
 		public static Bounds3 Intersect(Bounds3 a, Bounds3 b) {
 			return new Bounds3(
-				new Vector3f(MathF.Max(a.pMin.x, b.pMin.x), MathF.Max(a.pMin.y, b.pMin.y), MathF.Max(a.pMin.z, b.pMin.z)),
-				new Vector3f(MathF.Min(a.pMax.x, b.pMax.x), MathF.Min(a.pMax.y, b.pMax.y), MathF.Min(a.pMax.z, b.pMax.z))
+				new Vector3f(Math.Max(a.pMin.x, b.pMin.x), Math.Max(a.pMin.y, b.pMin.y), Math.Max(a.pMin.z, b.pMin.z)),
+				new Vector3f(Math.Min(a.pMax.x, b.pMax.x), Math.Min(a.pMax.y, b.pMax.y), Math.Min(a.pMax.z, b.pMax.z))
 			);
 		}
 		/// <summary>

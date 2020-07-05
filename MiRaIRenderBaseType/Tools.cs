@@ -1,10 +1,9 @@
-﻿using System; 
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Math = System.MathF;
 
 using Float = System.Single;
 
-namespace MiRaIRenderBaseType {
+namespace MiRaIRender.BaseType {
 	public static class Tools {
 		public const Float EPSILON = 0.000001f;
 

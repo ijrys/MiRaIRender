@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MiRaIRenderBaseType.SceneObject {
+namespace MiRaIRender.BaseType.SceneObject {
 	//public abstract class LightObject : RenderObject {
 
 	//}

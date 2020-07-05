@@ -1,8 +1,4 @@
-﻿//using System.Numerics;
-
-//using Vector3f = System.Numerics.Vector3;
-
-namespace MiRaIRenderBaseType {
+﻿namespace MiRaIRender.BaseType {
 	/// <summary>
 	/// 光线
 	/// </summary>

@@ -1,10 +1,7 @@
-﻿//using System.Numerics;
-
-//using Vector3f = System.Numerics.Vector3;
-using MiRaIRenderBaseType.Materials;
+﻿using MiRaIRender.BaseType.Materials;
 using Float = System.Single;
 
-namespace MiRaIRenderBaseType {
+namespace MiRaIRender.BaseType {
 	/// <summary>
 	/// 路径追踪测试结果
 	/// </summary>

@@ -1,10 +1,7 @@
-﻿//using System.Numerics;
+﻿using MiRaIRender.BaseType.SceneObject;
+using MiRaIRender.BaseType.Skybox;
 
-//using Vector3f = System.Numerics.Vector3;
-using MiRaIRenderBaseType.SceneObject;
-using MiRaIRenderBaseType.Skybox;
-
-namespace MiRaIRenderBaseType {
+namespace MiRaIRender.BaseType {
 	/// <summary>
 	/// 场景
 	/// </summary>

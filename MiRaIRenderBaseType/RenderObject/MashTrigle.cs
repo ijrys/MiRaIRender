@@ -1,15 +1,25 @@
-﻿//using System.Numerics;
-
-//using Vector3f = System.Numerics.Vector3;
-using MiRaIRenderBaseType.SceneObject;
+﻿using MiRaIRender.BaseType.SceneObject;
 using System;
 
-namespace MiRaIRenderBaseType {
+namespace MiRaIRender.BaseType {
 	/// <summary>
 	/// 三角形网格对象
 	/// </summary>
 	public class MashTrigle : RenderObject {
 		TrigleFace[] trigles;
+
+		public void SetTrigles (TrigleFace[] trigles) {
+			this.trigles = trigles;
+			if (trigles != null && trigles.Length > 1) {
+				Bounds3 bounds = trigles[0].BoundBox;
+				foreach (var item in trigles) {
+					bounds = Bounds3.Union(bounds, item.BoundBox);
+				}
+				this._boundBox = bounds;
+			} else {
+				this._boundBox = new Bounds3();
+			}
+		}
 
 		/// <summary>
 		/// 光线追踪测试

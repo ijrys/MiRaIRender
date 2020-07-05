@@ -1,13 +1,10 @@
-﻿//using System.Numerics;
-
-//using Vector3f = System.Numerics.Vector3;
-using MiRaIRenderBaseType.Materials;
-using MiRaIRenderBaseType.SceneObject;
+﻿using MiRaIRender.BaseType.Materials;
+using MiRaIRender.BaseType.SceneObject;
 using System;
 using Float = System.Single;
 using Math = System.MathF;
 
-namespace MiRaIRenderBaseType {
+namespace MiRaIRender.BaseType {
 	public class TrigleFace : RenderObject {
 		/// <summary>
 		/// 顶点

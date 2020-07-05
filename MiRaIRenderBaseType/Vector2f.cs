@@ -1,10 +1,8 @@
 ﻿using System;
-//using System.Numerics;
 
-//using Vector3f = System.Numerics.Vector3;
 using Float = System.Single;
 
-namespace MiRaIRenderBaseType {
+namespace MiRaIRender.BaseType {
 	public struct Vector2f {
 		public Float x, y;
 		public Vector2f(Float v) {

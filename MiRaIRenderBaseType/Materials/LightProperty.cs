@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// 材质相关类型
 /// </summary>
-namespace MiRaIRenderBaseType.Materials {
+namespace MiRaIRender.BaseType.Materials {
 	/// <summary>
 	/// 发光属性
 	/// </summary>

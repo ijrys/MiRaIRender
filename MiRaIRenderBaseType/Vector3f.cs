@@ -1,10 +1,7 @@
-﻿using System;
-//using System.Numerics;
-
-//using Vector3f = System.Numerics.Vector3;
+﻿using Math = System.MathF;
 using Float = System.Single;
 
-namespace MiRaIRenderBaseType {
+namespace MiRaIRender.BaseType {
 	public struct Vector3f {
 		public Float x, y, z;
 		public Vector3f(Float v) {
@@ -43,7 +40,7 @@ namespace MiRaIRenderBaseType {
 
 		#region functions
 		public Float Length() {
-			return MathF.Sqrt(x * x + y * y + z * z);
+			return Math.Sqrt(x * x + y * y + z * z);
 		}
 		public Float LengthSquare() {
 			return x * x + y * y + z * z;
@@ -152,17 +149,17 @@ namespace MiRaIRenderBaseType {
 		}
 
 		public static Vector3f Min(Vector3f a, Vector3f b) {
-			return new Vector3f(MathF.Min(a.x, b.x), MathF.Min(a.y, b.y), MathF.Min(a.z, b.z));
+			return new Vector3f(Math.Min(a.x, b.x), Math.Min(a.y, b.y), Math.Min(a.z, b.z));
 		}
 		public static Vector3f Max(Vector3f a, Vector3f b) {
-			return new Vector3f(MathF.Max(a.x, b.x), MathF.Max(a.y, b.y), MathF.Max(a.z, b.z));
+			return new Vector3f(Math.Max(a.x, b.x), Math.Max(a.y, b.y), Math.Max(a.z, b.z));
 		}
 
 		public static Float LengthSquare(Vector3f v) {
 			return v.x * v.x + v.y * v.y + v.z * v.z;
 		}
 		public static Float Length(Vector3f v) {
-			return MathF.Sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+			return Math.Sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 		}
 
 
