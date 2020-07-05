@@ -127,7 +127,7 @@ namespace ModelLoader {
 							{ //normal
 								Vector3f facenormal = new Vector3f();
 								if (vnidx[0] == -1 || vnidx[i - 1] == -1 || vnidx[i] == -1) {
-									facenormal = face.e1 ^ face.e2;
+									facenormal = (face.e1 ^ face.e2).Normalize();
 								}
 
 								if (vnidx[0] == -1) {
