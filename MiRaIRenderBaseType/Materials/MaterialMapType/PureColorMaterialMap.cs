@@ -12,6 +12,12 @@ namespace MiRaIRender.BaseType.Materials {
 		public Color Color(Vector2f position) {
 			return BaseColor;
 		}
+		public PureColorMaterialMap() {
+			BaseColor = new Color(0.8f);
+		}
+		public PureColorMaterialMap(Color color) {
+			BaseColor = color;
+		}
 	}
 
 	public class PureGrayMaterialMap : IMaterialGrayMapAble {
@@ -23,6 +29,16 @@ namespace MiRaIRender.BaseType.Materials {
 
 		public float Lightness(Vector2f position) {
 			return BaseGray;
+		}
+
+		public PureGrayMaterialMap() {
+			BaseGray = 0.8f;
+		}
+		public PureGrayMaterialMap(Float lightness) {
+			BaseGray = lightness;
+		}
+		public PureGrayMaterialMap(Color color) {
+			BaseGray = (color.R + color.G + color.B) / 3.0f;
 		}
 	}
 }

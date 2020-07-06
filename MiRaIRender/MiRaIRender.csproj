@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MiRaIRender.Render.PathTrace\MiRaIRender.Render.PathTrace.csproj" />
     <ProjectReference Include="..\MiRaIRenderBaseType\MiRaIRender.BaseType.csproj" />
+    <ProjectReference Include="..\ModelLoader\ModelLoader.csproj" />
   </ItemGroup>
 
 </Project>

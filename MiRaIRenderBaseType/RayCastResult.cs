@@ -1,4 +1,5 @@
 ﻿using MiRaIRender.BaseType.Materials;
+using MiRaIRender.BaseType.SceneObject;
 using Float = System.Single;
 
 namespace MiRaIRender.BaseType {
@@ -24,7 +25,7 @@ namespace MiRaIRender.BaseType {
 		/// <summary>
 		/// 追踪物体
 		/// </summary>
-		public RenderAbleObject obj;
+		public RenderObject obj;
 
 		/// <summary>
 		/// 追踪点材质

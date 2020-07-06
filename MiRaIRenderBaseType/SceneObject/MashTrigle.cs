@@ -7,6 +7,18 @@ namespace MiRaIRender.BaseType {
 	/// </summary>
 	public class MashTrigle : RenderObject {
 		TrigleFace[] trigles;
+		private Materials.Material _material = new Materials.Material();
+
+		public Materials.Material Material {
+			get => _material;
+			set {
+				if (trigles != null) {
+					foreach (TrigleFace t in trigles) {
+						t.material = value;
+					}
+				}
+			}
+		}
 
 		public void SetTrigles (TrigleFace[] trigles) {
 			this.trigles = trigles;

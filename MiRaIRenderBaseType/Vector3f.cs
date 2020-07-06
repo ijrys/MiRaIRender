@@ -1,5 +1,6 @@
 ﻿using Math = System.MathF;
 using Float = System.Single;
+using System;
 
 namespace MiRaIRender.BaseType {
 	public struct Vector3f {

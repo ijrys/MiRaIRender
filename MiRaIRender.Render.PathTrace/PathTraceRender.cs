@@ -8,15 +8,13 @@ namespace MiRaIRender.Render.PathTrace {
 	public class PathTraceRender {
 		
 		private Scene scene;
-		
-
 
 		public Scene Scene {
 			get => scene;
 			set => scene = value;
 		}
 
-		PathTraceRenderOptions Options;
+		public PathTraceRenderOptions Options;
 
 		public Color[,] RenderImg() {
 			int height = Options.Height,

@@ -12,28 +12,28 @@ namespace MiRaIRender.BaseType.Materials {
 		/// <summary>
 		/// 基础色
 		/// </summary>
-		public IMaterialMapAble BaseColor;
+		public IMaterialMapAble BaseColor= new PureColorMaterialMap();
 
 		/// <summary>
 		/// 法线贴图【未启用】
 		/// </summary>
-		public IMaterialMapAble NormalMap;
+		public IMaterialMapAble NormalMap = null;
 
 		/// <summary>
 		/// 表面粗糙度
 		/// </summary>
-		public Float Roughness;
+		public Float Roughness = 1.0f;
 
 		/// <summary>
 		/// 金属感
 		/// </summary>
-		public MetallicProperty Metallic;
+		public MetallicProperty Metallic = new MetallicProperty();
 
 		/// <summary>
 		/// 透射率
 		/// </summary>
-		public Float Specular;
+		public Float Specular = 0.0f;
 
-		public LightProperty Light;
+		public LightProperty Light = new LightProperty();
 	}
 }
