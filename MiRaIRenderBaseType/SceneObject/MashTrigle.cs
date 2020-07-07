@@ -20,6 +20,8 @@ namespace MiRaIRender.BaseType {
 			}
 		}
 
+		private BVH BVH;
+
 		public void SetTrigles (TrigleFace[] trigles) {
 			this.trigles = trigles;
 			if (trigles != null && trigles.Length > 0) {
@@ -32,6 +34,9 @@ namespace MiRaIRender.BaseType {
 			} else {
 				this._boundBox = new Bounds3();
 			}
+
+			CenterPoint = (_boundBox.pMin + _boundBox.pMax) * 0.5f;
+			BVH = BVH.Build(trigles.AsSpan());
 		}
 
 		/// <summary>
@@ -46,12 +51,13 @@ namespace MiRaIRender.BaseType {
 			}
 
 			RayCastResult result = new RayCastResult();
-			foreach (TrigleFace trigle in trigles) {
-				RayCastResult resTemp = trigle.Intersection(ray);
-				if (resTemp.happened && (!result.happened || result.distance > resTemp.distance)) {
-					result = resTemp;
-				}
-			}
+			//foreach (TrigleFace trigle in trigles) {
+			//	RayCastResult resTemp = trigle.Intersection(ray);
+			//	if (resTemp.happened && (!result.happened || result.distance > resTemp.distance)) {
+			//		result = resTemp;
+			//	}
+			//}
+			result = BVH.Intersection(ray);
 			return result;
 		}
 

@@ -7,6 +7,11 @@ namespace MiRaIRender.BaseType.SceneObject {
 
 		public Bounds3 BoundBox { get => _boundBox; }
 
+		public Vector3f CenterPoint {
+			get;
+			protected set;
+		}
+
 		public abstract RayCastResult Intersection(Ray ray);
 
 		public abstract Vector2f UV2XY(Vector2f uv);

@@ -38,6 +38,7 @@ namespace MiRaIRender.BaseType {
 			e2 = v2 - v0;
 
 			_boundBox = Bounds3.Union(new Bounds3(v0, v1), v2);
+			CenterPoint = (v0 + v1 + v2) / 3.0f;
 		}
 
 		public override RayCastResult Intersection(Ray ray) {
