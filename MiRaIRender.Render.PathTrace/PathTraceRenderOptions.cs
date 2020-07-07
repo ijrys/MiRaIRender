@@ -8,11 +8,12 @@ namespace MiRaIRender.Render.PathTrace {
 		private int _subSampleNumberPerPixel = 8;
 		private int _traceDeep = 4;
 
-		public int SubSampleNumberPerPixel { 
+		public int SubSampleNumberPerPixel {
 			get => _subSampleNumberPerPixel;
 			set {
 				if (value < 1) { value = 1; }
-				else if (value > 0x1000000‬) { value = 0x1000000; }
+				else if (value > 0x1000000) { value = 0x1000000; }
+				//else if (value > 0x1000000‬) { value = 0x1000000; }
 				_subSampleNumberPerPixel = value;
 			}
 		}
@@ -24,5 +25,7 @@ namespace MiRaIRender.Render.PathTrace {
 				_traceDeep = value;
 			}
 		}
+
+		public Vector3f CameraOrigin = new Vector3f();
 	}
 }

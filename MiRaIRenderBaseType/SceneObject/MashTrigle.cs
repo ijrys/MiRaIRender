@@ -22,10 +22,11 @@ namespace MiRaIRender.BaseType {
 
 		public void SetTrigles (TrigleFace[] trigles) {
 			this.trigles = trigles;
-			if (trigles != null && trigles.Length > 1) {
+			if (trigles != null && trigles.Length > 0) {
 				Bounds3 bounds = trigles[0].BoundBox;
 				foreach (var item in trigles) {
 					bounds = Bounds3.Union(bounds, item.BoundBox);
+					item.material = _material;
 				}
 				this._boundBox = bounds;
 			} else {

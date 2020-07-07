@@ -30,16 +30,17 @@ namespace MiRaIRender.Render.PathTrace {
 
 			Color[,] img = new Color[height, width];
 			for (int j = 0; j < height; j++) {
+				Console.WriteLine("rendering " + j);
 				Float y = ymax - j * pixelLength;
 				for (int i = 0; i < width; i++) {
 					Float x = xmin + i * pixelLength;
 
 					Color color = new Color();
 					for (int k = 0; k < subSampleNumberPerPixel; k++) {
-						Float xt = (Float)random.NextDouble();
-						Float yt = (Float)random.NextDouble();
+						Float xt = (Float)random.NextDouble() * pixelLength;
+						Float yt = (Float)random.NextDouble() * pixelLength;
 
-						Ray r = new Ray(new Vector3f(0, 0, 0), new Vector3f(x + xt, y + yt, -1).Normalize());
+						Ray r = new Ray(Options.CameraOrigin, new Vector3f(x + xt, y + yt, -1.0f).Normalize());
 						color += PathTrace(r, traceDeep) / subSampleNumberPerPixel;
 					}
 
@@ -115,7 +116,7 @@ namespace MiRaIRender.Render.PathTrace {
 
 					Ray r = new Ray(rcr.coords, dir.Normalize());
 					RayCastResult rayCastResult = Scene.Intersection(r);
-					if (!rayCastResult.happened || rayCastResult.obj != apoint) { // 中间遮挡
+					if (!rayCastResult.happened || rayCastResult.obj != item) { // 中间遮挡
 						continue;
 					}
 

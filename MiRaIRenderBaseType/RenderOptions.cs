@@ -30,7 +30,7 @@ namespace MiRaIRender.BaseType {
 			set {
 				if (value < 1) value = 1;
 				else if (value > 170) value = 170;
-				_fovHorizon = 170;
+				_fovHorizon = value;
 			}
 		}
 		public int RandonSeed {

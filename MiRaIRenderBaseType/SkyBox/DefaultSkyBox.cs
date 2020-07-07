@@ -7,7 +7,7 @@
 		}
 
 		public DefaultSkyBox () {
-			_c = new Color(0.5f);
+			_c = new Color(0.3f, 0.3f, 0.9f);
 		}
 		public DefaultSkyBox(Color c) {
 			_c = c;

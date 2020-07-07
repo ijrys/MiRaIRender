@@ -16,6 +16,10 @@ namespace MiRaIRender.BaseType {
 			z = zv;
 		}
 
+		public override string ToString() {
+			return $"V3f:{{{x:0.000}, {y:0.000}, {z:0.000} }}";
+		}
+
 		#region Index
 		public Float this[int i] {
 			get {

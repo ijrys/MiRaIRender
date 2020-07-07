@@ -13,6 +13,9 @@ namespace MiRaIRender.BaseType {
 			x = xv;
 			y = yv;
 		}
+		public override string ToString() {
+			return $"V2f:{{{x:0.000}, {y:0.000} }}";
+		}
 
 		#region Index
 		public Float this[int i] {

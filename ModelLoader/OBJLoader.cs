@@ -13,9 +13,9 @@ namespace ModelLoader {
 			string[] lines = File.ReadAllLines(filePath);
 
 			List<MashTrigle> mashes = new List<MashTrigle>();
-			List<Vector3f> v = new List<Vector3f>();
-			List<Vector2f> vt = new List<Vector2f>();
-			List<Vector3f> vn = new List<Vector3f>();
+			List<Vector3f> v = new List<Vector3f>() { new Vector3f() };
+			List<Vector2f> vt = new List<Vector2f>() { new Vector2f() };
+			List<Vector3f> vn = new List<Vector3f>() { new Vector3f() };
 
 			MashTrigle nobj = null;
 			List<TrigleFace> trigles = new List<TrigleFace>();
@@ -82,7 +82,7 @@ namespace ModelLoader {
 						break;
 					case "g":
 						#region g
-						if (trigles != null &&  trigles.Count > 0) {
+						if (trigles != null && trigles.Count > 0) {
 							if (nobj == null) {
 								nobj = new MashTrigle();
 							}
@@ -101,20 +101,21 @@ namespace ModelLoader {
 						}
 						int pointcount = parts.Length - 1;
 						int[] vidx = new int[pointcount], vtidx = new int[pointcount], vnidx = new int[pointcount];
-						
+
 						// 分割顶点信息
 						for (int i = 0; i < pointcount; i++) {
 							string pinfo = parts[i + 1];
 							string[] infos = pinfo.Split(PInfoSplitChars);
 							vidx[i] = int.Parse(infos[0]);
-							if (infos.Length > 1) {
-								vtidx[i] = int.Parse(infos[1]);
+							int tmp;
+							if (infos.Length > 1 && int.TryParse(infos[1], out tmp)) {
+								vtidx[i] = tmp;
 							}
 							else {
 								vtidx[i] = -1;
 							}
-							if (infos.Length > 2) {
-								vnidx[i] = int.Parse(infos[2]);
+							if (infos.Length > 2 && int.TryParse(infos[1], out tmp)) {
+								vnidx[i] = tmp;
 							}
 							else {
 								vnidx[i] = -1;
