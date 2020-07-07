@@ -9,30 +9,31 @@ using System.Numerics;
 namespace MiRaIRender {
 	class Program {
 		static void Main(string[] args) {
-			MashTrigle[] objs = OBJLoader.LoadModel("A:\\t2.obj");
-			
+			MashTrigle[] objs = OBJLoader.LoadModel("A:\\m2.obj");
+
 			MashTrigle obj = objs[0];
 			//obj.Material.BaseColor = new PureColorMaterialMap(new Color(0.1f));
 			Scene scene = new Scene();
-			scene.Objects = new BaseType.SceneObject.RenderObject[] { obj };
+			scene.Objects.Add(obj);
 
 			PointLight pLight1 = new PointLight() {
-				Color = new Color(30.0f),
-				Position = new Vector3f(20, 20, 20)
+				Color = new Color(30.0f, 10.0f, 10.0f),
+				Position = new Vector3f(-5, 5, 1)
 			};
 			PointLight pLight2 = new PointLight() {
-				Color = new Color(30.0f),
-				Position = new Vector3f(20, 20, -20)
+				Color = new Color(10.0f, 10.0f, 30.0f),
+				Position = new Vector3f(5, 5, 1)
 			};
-			scene.LightObjects = new BaseType.SceneObject.RenderObject[] { pLight1, pLight2 };
+			scene.LightObjects.Add(pLight1);
+			scene.LightObjects.Add(pLight2);
 
 			PathTraceRenderOptions options = new PathTraceRenderOptions() {
-				CameraOrigin = new Vector3f(0.0f, 0.0f, 4.0f),
-				Width = 800,
-				Height = 600,
-				FovHorizon = 90,
-				TraceDeep = 3,
-				SubSampleNumberPerPixel = 512
+				CameraOrigin = new Vector3f(0.0f, 0.05f, 4.0f),
+				Width = 400,
+				Height = 300,
+				FovHorizon = 60,
+				TraceDeep = 4,
+				SubSampleNumberPerPixel = 256
 			};
 			PathTraceRender render = new PathTraceRender() {
 				Scene = scene,

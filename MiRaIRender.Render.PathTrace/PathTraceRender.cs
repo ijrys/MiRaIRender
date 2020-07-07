@@ -17,6 +17,8 @@ namespace MiRaIRender.Render.PathTrace {
 		public PathTraceRenderOptions Options;
 
 		public Color[,] RenderImg() {
+			scene.PreRender();
+
 			int height = Options.Height,
 				width = Options.Width,
 				subSampleNumberPerPixel = Options.SubSampleNumberPerPixel,
@@ -107,7 +109,7 @@ namespace MiRaIRender.Render.PathTrace {
 				color = PathTrace(traceRay, deepLast - 1) * baseColor;
 
 				Vector3f vitureNormal = rcr.normal; // todo get normal by normal texture
-				foreach (RenderObject item in scene.LightObjects) {
+				foreach (RenderObject item in scene.r_LightObjects) {
 					Vector3f apoint = item.SelectALightPoint(rcr.coords);
 					Vector3f dir = apoint - rcr.coords;
 					if ((rcr.normal & dir) < 0.0f) { // 目标点在法平面下方
