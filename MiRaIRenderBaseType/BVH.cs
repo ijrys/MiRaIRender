@@ -201,7 +201,7 @@ namespace MiRaIRender.BaseType {
 				boundbox = Bounds3.Union(boundbox, item.BoundBox);
 			}
 			BVH re = new BVH() { BoundsBox = boundbox };
-			if (objs.Length < 9) {
+			if (objs.Length < 5) {
 				re.Childs = objs.ToArray();
 				return re;
 			}

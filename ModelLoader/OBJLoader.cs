@@ -48,8 +48,8 @@ namespace ModelLoader {
 						break;
 					case "vt":
 						#region vt
-						if (parts.Length != 3) {
-							throw new Exception($"line {linecount} : 缺少参数的行，请求2个，实际为{parts.Length - 1}个");
+						if (parts.Length != 3 && parts.Length != 4) {
+							throw new Exception($"line {linecount} : 缺少参数的行，请求2或3个，实际为{parts.Length - 1}个");
 						}
 						if (!Float.TryParse(parts[1], out p0)) {
 							throw new Exception($"line {linecount} : 不能转换的数据 {parts[1]}");
@@ -74,7 +74,7 @@ namespace ModelLoader {
 						if (!Float.TryParse(parts[3], out p2)) {
 							throw new Exception($"line {linecount} : 不能转换的数据 {parts[3]}");
 						}
-						vn.Add(new Vector3f(p0, p1, p2));
+						vn.Add(new Vector3f(p0, p1, p2).Normalize());
 						#endregion
 						break;
 					case "vp":

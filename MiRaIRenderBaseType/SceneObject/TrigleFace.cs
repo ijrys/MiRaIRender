@@ -22,10 +22,10 @@ namespace MiRaIRender.BaseType {
 		/// 贴图坐标
 		/// </summary>
 		public Vector2f sp0, sp1, sp2;
-		/// <summary>
-		/// 材质
-		/// </summary>
-		public Material material;
+		///// <summary>
+		///// 材质
+		///// </summary>
+		//public Material material;
 
 		//public MashTrigle ParentMash;
 
@@ -71,7 +71,7 @@ namespace MiRaIRender.BaseType {
 			result.happened = true;
 			result.distance = t_tmp;
 			result.obj = this;
-			result.material = material;
+			//result.material = material;
 			result.coords = ray.Origin + t_tmp * ray.Direction;
 			result.uv = new Vector2f(u, v);
 			result.normal = Vector3f.UVMerge(u, v, n0, n1, n2);

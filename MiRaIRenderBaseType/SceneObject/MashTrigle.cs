@@ -12,11 +12,12 @@ namespace MiRaIRender.BaseType {
 		public Materials.Material Material {
 			get => _material;
 			set {
-				if (trigles != null) {
-					foreach (TrigleFace t in trigles) {
-						t.material = value;
-					}
-				}
+				//if (trigles != null) {
+				//	foreach (TrigleFace t in trigles) {
+				//		t.material = value;
+				//	}
+				//}
+				_material = value;
 			}
 		}
 
@@ -28,7 +29,7 @@ namespace MiRaIRender.BaseType {
 				Bounds3 bounds = trigles[0].BoundBox;
 				foreach (var item in trigles) {
 					bounds = Bounds3.Union(bounds, item.BoundBox);
-					item.material = _material;
+					//item.material = _material;
 				}
 				this._boundBox = bounds;
 			} else {
@@ -58,6 +59,9 @@ namespace MiRaIRender.BaseType {
 			//	}
 			//}
 			result = BVH.Intersection(ray);
+			if (result.happened) {
+				result.material = Material;
+			}
 			return result;
 		}
 

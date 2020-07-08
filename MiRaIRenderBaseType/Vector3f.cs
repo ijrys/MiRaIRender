@@ -50,8 +50,9 @@ namespace MiRaIRender.BaseType {
 		public Float LengthSquare() {
 			return x * x + y * y + z * z;
 		}
-		public Vector3f Normalize() {
-			return this / this.LengthSquare();
+		public Vector3f Normalize() { // todo : 优化
+			Float len = this.Length();
+			return this / len;
 		}
 		public Float MinValue() {
 			float re = x;

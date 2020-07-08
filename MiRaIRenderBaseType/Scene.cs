@@ -19,6 +19,9 @@ namespace MiRaIRender.BaseType {
 		public RayCastResult Intersection(Ray ray) {
 			RayCastResult result = new RayCastResult();
 			foreach (RenderObject o in r_Objects) {
+				//if (o == this.r_Objects[1]) {
+				//	System.Console.WriteLine("a");
+				//}
 				RayCastResult re = o.Intersection(ray);
 				if (re.happened && (!result.happened || re.distance < result.distance)) {
 					result = re;

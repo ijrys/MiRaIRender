@@ -42,7 +42,8 @@ namespace MiRaIRender.Render.PathTrace {
 						Float xt = (Float)random.NextDouble() * pixelLength;
 						Float yt = (Float)random.NextDouble() * pixelLength;
 
-						Ray r = new Ray(Options.CameraOrigin, new Vector3f(x + xt, y + yt, -1.0f).Normalize());
+						Vector3f dir = new Vector3f(x + xt, y + yt, -1.0f).Normalize();
+						Ray r = new Ray(Options.CameraOrigin, dir);
 						color += PathTrace(r, traceDeep) / subSampleNumberPerPixel;
 					}
 

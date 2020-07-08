@@ -1,25 +1,53 @@
-﻿using MiRaIRender.BaseType.SceneObject;
+﻿using MiRaIRender.BaseType.Materials;
+using MiRaIRender.BaseType.SceneObject;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Math = System.MathF;
+using Float = System.Single;
 
 namespace MiRaIRender.BaseType.LightSource {
-	public class PointLight: RenderObject {
-		private Color _color;
+	public class PointLight : RenderObject {
+		//private Color _color;
 
-		public Color MaxColor;
-		public Color Color {
-			get => _color;
-			set {
-				MaxColor = value * 4 * Math.PI;
-				_color = value;
-			}
-		}
+		//public Color MaxColor;
+		//public Color Color {
+		//	get => _color;
+		//	set {
+		//		MaxColor = value * 4 * Math.PI;
+		//		_color = value;
+		//	}
+		//}
 		public Vector3f Position;
 
+		public Material Material {
+			get;
+			private set;
+		}
+
+		public PointLight() {
+			Material = new Material();
+			Material.Light.Enable = true;
+			Material.Light.Intensity = new Color(10.0f);
+		}
+
 		public override RayCastResult Intersection(Ray ray) {
-			return new RayCastResult();
+			Vector3f dir = Position - ray.Origin;
+			Vector3f t = dir * ray.Direction_Inv;
+			RayCastResult result = new RayCastResult();
+			if (t.x < 0 || t.y < 0 || t.z < 0) {
+				return result;
+			}
+			if (Tools.FloatClosely(t.x, t.y, 0.00001f) &&
+				Tools.FloatClosely(t.x, t.z, 0.00001f)) {
+				result.happened = true;
+				result.obj = this;
+				result.normal = -ray.Direction;
+				result.material = Material;
+				result.distance = dir.LengthSquare();
+				result.coords = Position;
+			}
+			return result;
 		}
 
 		public override Vector2f UV2XY(Vector2f uv) {

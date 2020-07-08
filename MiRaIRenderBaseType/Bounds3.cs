@@ -5,15 +5,17 @@ namespace MiRaIRender.BaseType {
 	/// 三维包围盒
 	/// </summary>
 	public class Bounds3 {
+		public static Vector3f Margin = new Vector3f(0.0001f);
 		public Vector3f pMin, pMax;
 		public Bounds3() { }
 
 		public Bounds3(Vector3f p) {
-			pMin = pMax = p;
+			pMin = p - Margin;
+			pMax = p + Margin;
 		}
 		public Bounds3(Vector3f p1, Vector3f p2) {
-			pMin = new Vector3f(Math.Min(p1.x, p2.x), Math.Min(p1.y, p2.y), Math.Min(p1.z, p2.z));
-			pMax = new Vector3f(Math.Max(p1.x, p2.x), Math.Max(p1.y, p2.y), Math.Max(p1.z, p2.z));
+			pMin = new Vector3f(Math.Min(p1.x, p2.x), Math.Min(p1.y, p2.y), Math.Min(p1.z, p2.z)) - Margin;
+			pMax = new Vector3f(Math.Max(p1.x, p2.x), Math.Max(p1.y, p2.y), Math.Max(p1.z, p2.z)) + Margin;
 		}
 
 		/// <summary>

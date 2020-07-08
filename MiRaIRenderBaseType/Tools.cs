@@ -9,6 +9,11 @@ namespace MiRaIRender.BaseType {
 
 		public const Float PI = 3.1415926535897931f;
 
+		public static bool FloatClosely (Float a, Float b, Float di) {
+			return (b > a - di &&
+				b < a + di);
+		}
+
 		public static Float GetRadianByAngle (Float angle) {
 			return (angle % 360) * PI / 180.0f;
 		}
