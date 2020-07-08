@@ -19,6 +19,16 @@ namespace MiRaIRender.BaseType {
 		}
 
 		/// <summary>
+		/// 获取反射方向
+		/// </summary>
+		/// <param name="dir"></param>
+		/// <param name="n"></param>
+		/// <returns></returns>
+		public static Vector3f Reflect(Vector3f dir, Vector3f n) {
+			return dir - Vector3f.Dot(dir, n) * 2.0f * n;
+		}
+
+		/// <summary>
 		/// schlick反射率
 		/// </summary>
 		/// <param name="f0"></param>
@@ -41,7 +51,7 @@ namespace MiRaIRender.BaseType {
 				x = r.NextDouble();
 				y = r.NextDouble();
 				z = r.NextDouble();
-			} while (x * x + y * y + z * z <= 1.0);
+			} while (x * x + y * y + z * z > 1.0);
 
 			return new Vector3f((Float)x, (Float)y, (Float)z);
 		}

@@ -11,13 +11,16 @@ namespace MiRaIRender {
 		static void Main(string[] args) {
 			Scene scene = new Scene();
 
-			MashTrigle[] objs = OBJLoader.LoadModel("A:\\m3_1.obj");
-			MashTrigle obj = objs[0];
+			MashTrigle[] objs;
+			MashTrigle obj;
+			objs = OBJLoader.LoadModel("A:\\m3_1.obj");
+			obj = objs[0];
 			scene.Objects.Add(obj);
 
 			objs = OBJLoader.LoadModel("A:\\m3_2.obj");
 			obj = objs[0];
 			obj.Material.Metallic.Metallic = 1.0f;
+			obj.Material.Roughness = 0.0f;
 			obj.Material.BaseColor = new PureColorMaterialMap(new Color( 0.95f));
 			scene.Objects.Add(obj);
 
@@ -42,7 +45,7 @@ namespace MiRaIRender {
 				Height = 300,//75,
 				FovHorizon = 60,
 				TraceDeep = 4,
-				SubSampleNumberPerPixel = 128 //16
+				SubSampleNumberPerPixel = 256 //16
 			};
 			PathTraceRender render = new PathTraceRender() {
 				Scene = scene,

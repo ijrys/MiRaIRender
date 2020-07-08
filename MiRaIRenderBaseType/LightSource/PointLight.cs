@@ -8,16 +8,10 @@ using Float = System.Single;
 
 namespace MiRaIRender.BaseType.LightSource {
 	public class PointLight : RenderObject {
-		//private Color _color;
-
-		//public Color MaxColor;
-		//public Color Color {
-		//	get => _color;
-		//	set {
-		//		MaxColor = value * 4 * Math.PI;
-		//		_color = value;
-		//	}
-		//}
+		
+		/// <summary>
+		/// 光源位置
+		/// </summary>
 		public Vector3f Position;
 
 		public Material Material {

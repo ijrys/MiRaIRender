@@ -6,7 +6,7 @@ using Math = System.MathF;
 
 namespace MiRaIRender.Render.PathTrace {
 	public class PathTraceRender {
-		
+
 		private Scene scene;
 
 		public Scene Scene {
@@ -87,7 +87,7 @@ namespace MiRaIRender.Render.PathTrace {
 		#region MetallicColor 镜面反射
 		MetallicColor:
 			{
-				Vector3f traceDir = (rcr.normal + Tools.RandomPointInSphere() * rcr.material.Roughness).Normalize();
+				Vector3f traceDir = (Tools.Reflect(ray.Direction, rcr.normal) + Tools.RandomPointInSphere() * rcr.material.Roughness).Normalize();
 				Ray traceRay = new Ray(rcr.coords, traceDir);
 				color = PathTrace(traceRay, deepLast - 1) * baseColor;
 
