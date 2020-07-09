@@ -14,6 +14,8 @@ namespace MiRaIRender.BaseType.LightSource {
 		/// </summary>
 		public Vector3f Position;
 
+		public Float R = 0.1f;
+
 		public Material Material {
 			get;
 			private set;
@@ -26,21 +28,41 @@ namespace MiRaIRender.BaseType.LightSource {
 		}
 
 		public override RayCastResult Intersection(Ray ray) {
-			Vector3f dir = Position - ray.Origin;
-			Vector3f t = dir * ray.Direction_Inv;
 			RayCastResult result = new RayCastResult();
-			if (t.x < 0 || t.y < 0 || t.z < 0) {
+
+			Vector3f A = ray.Origin, B = ray.Direction, C = Position;
+			Float a = Vector3f.Dot(B, B);
+			Float b = Vector3f.Dot(B, (A - C)) * 2.0f;
+			Float c = (A - C).LengthSquare() - R * R;
+
+			float drt = b * b - 4 * a * c;
+			if (drt < 0) {
 				return result;
 			}
-			if (Tools.FloatClosely(t.x, t.y, 0.00001f) &&
-				Tools.FloatClosely(t.x, t.z, 0.00001f)) {
-				result.happened = true;
-				result.obj = this;
-				result.normal = -ray.Direction;
-				result.material = Material;
-				result.distance = dir.LengthSquare();
-				result.coords = Position;
+			drt = Math.Sqrt(drt);
+			float x1 = (-b + drt) / a / 2;
+			float x2 = (-b - drt) / a / 2;
+			if (x1 < 0 && x2 < 0) {
+				return result;
 			}
+
+			float d;
+			if (x1 > 0 && x2 > 0) {
+				d = Math.Max(x1, x2);
+			}
+			else if (x1 > 0) {
+				d = x1;
+			}
+			else {
+				d = x2;
+			}
+			result.happened = true;
+			result.obj = this;
+			result.material = Material;
+			result.coords = ray.Origin + ray.Direction * d;
+			result.distance = (ray.Direction * d).Length();
+			result.normal = (result.coords - Position).Normalize();
+
 			return result;
 		}
 
@@ -49,7 +71,7 @@ namespace MiRaIRender.BaseType.LightSource {
 		}
 
 		public override Vector3f SelectALightPoint(Vector3f rayFrom) {
-			return Position;
+			return Tools.RandomPointInSphere() * R + Position;
 		}
 	}
 }

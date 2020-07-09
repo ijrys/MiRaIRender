@@ -22,12 +22,6 @@ namespace MiRaIRender.BaseType {
 		/// 贴图坐标
 		/// </summary>
 		public Vector2f sp0, sp1, sp2;
-		///// <summary>
-		///// 材质
-		///// </summary>
-		//public Material material;
-
-		//public MashTrigle ParentMash;
 
 		public TrigleFace(Vector3f pointa, Vector3f pointb, Vector3f pointc) {
 			v0 = pointa;

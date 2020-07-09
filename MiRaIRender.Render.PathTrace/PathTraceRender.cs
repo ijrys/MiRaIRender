@@ -31,6 +31,7 @@ namespace MiRaIRender.Render.PathTrace {
 			Random random = Options.Random;
 
 			Color[,] img = new Color[height, width];
+
 			for (int j = 0; j < height; j++) {
 				Console.WriteLine("rendering " + j);
 				Float y = ymax - j * pixelLength;
@@ -66,12 +67,12 @@ namespace MiRaIRender.Render.PathTrace {
 			Vector2f mapCoords = rcr.obj.UV2XY(rcr.uv);
 			Color baseColor = rcr.material.BaseColor.Color(mapCoords);
 
-			int rvallue = Options.Random.Next() & 0xFFFFFF;
+			int rvallue = Options.Random.Next() & 0xFFFF;
 			{
 				Float rrate = Tools.Schlick(rcr.material.Metallic.GetMetallic(mapCoords), rcr.normal & (-ray.Direction));
-				Float rtrans = (1 - rrate) * rcr.material.Specular + rrate;
-				int rmaxv = (int)(0x1000000 * rrate);
-				int transmaxv = (int)(0x1000000 * rtrans) + rmaxv;
+				Float rtrans = (1 - rrate) * rcr.material.Specular;
+				int rmaxv = (int)(0xFFFF * rrate);
+				int transmaxv = (int)(0xFFFF * rtrans) + rmaxv;
 
 				if (rvallue < rmaxv) { // 镜面反射
 					goto MetallicColor;
@@ -87,8 +88,9 @@ namespace MiRaIRender.Render.PathTrace {
 		#region MetallicColor 镜面反射
 		MetallicColor:
 			{
-				Vector3f traceDir = (Tools.Reflect(ray.Direction, rcr.normal) + Tools.RandomPointInSphere() * rcr.material.Roughness).Normalize();
-				Ray traceRay = new Ray(rcr.coords, traceDir);
+				Float roughtness = rcr.material.Roughness;
+				Vector3f traceDir = (Tools.Reflect(ray.Direction, rcr.normal) + Tools.RandomPointInSphere() * roughtness).Normalize();
+				Ray traceRay = new Ray(rcr.coords + traceDir * 0.0002f, traceDir);
 				color = PathTrace(traceRay, deepLast - 1) * baseColor;
 
 				goto RTPoint;
@@ -106,7 +108,7 @@ namespace MiRaIRender.Render.PathTrace {
 		DiffuseColor:
 			{
 				Vector3f traceDir = (rcr.normal + Tools.RandomPointInSphere() * rcr.material.Roughness).Normalize();
-				Ray traceRay = new Ray(rcr.coords, traceDir);
+				Ray traceRay = new Ray(rcr.coords + traceDir * 0.0002f, traceDir);
 				color = PathTrace(traceRay, deepLast - 1) * baseColor;
 
 				Vector3f vitureNormal = rcr.normal; // todo get normal by normal texture
@@ -116,22 +118,19 @@ namespace MiRaIRender.Render.PathTrace {
 					if ((rcr.normal & dir) < 0.0f) { // 目标点在法平面下方
 						continue;
 					}
-
-					Ray r = new Ray(rcr.coords, dir.Normalize());
+					dir = dir.Normalize();
+					Ray r = new Ray(rcr.coords + dir * 0.0002f, dir.Normalize());
 					RayCastResult rayCastResult = Scene.Intersection(r);
 					if (!rayCastResult.happened || rayCastResult.obj != item) { // 中间遮挡
 						continue;
 					}
 
 					Vector2f xycoords = rayCastResult.obj.UV2XY(rayCastResult.uv);
-					Color light = rayCastResult.material.Light.GetLight(xycoords);
+					Color light = rayCastResult.material.Light.GetLight(xycoords) * baseColor;
 
-					Float lightIntensity = (r.Direction & vitureNormal) / rayCastResult.distance;
-					color += light * lightIntensity;
+					Float lightIntensity = (r.Direction & vitureNormal) / (rayCastResult.distance * rayCastResult.distance);
+					color += light * lightIntensity / (Math.PI * 2);
 				}
-
-				color /= Math.PI * 2;
-
 				goto RTPoint;
 			}
 
