@@ -48,18 +48,11 @@ namespace MiRaIRender.BaseType {
 		public override RayCastResult Intersection(Ray ray) {
 			// 包围盒测试失败
 			if (!_boundBox.Intersection(ray)) {
-				return new RayCastResult();
+				return null;
 			}
 
-			RayCastResult result = new RayCastResult();
-			//foreach (TrigleFace trigle in trigles) {
-			//	RayCastResult resTemp = trigle.Intersection(ray);
-			//	if (resTemp.happened && (!result.happened || result.distance > resTemp.distance)) {
-			//		result = resTemp;
-			//	}
-			//}
-			result = BVH.Intersection(ray);
-			if (result.happened) {
+			RayCastResult result = BVH.Intersection(ray);
+			if (result != null) {
 				result.material = Material;
 			}
 			return result;

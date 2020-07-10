@@ -1,5 +1,5 @@
 ﻿//using ImageTools;
-//using MiRaIRender.BaseType;
+using MiRaIRender.BaseType;
 using System;
 using Float = System.Single;
 namespace Test {
@@ -57,46 +57,25 @@ namespace Test {
 			return aimid;
 		}
 		static void Main(string[] args) {
+			//TrigleFace face = new TrigleFace(
+			//	new Vector3f(-1, -1, -1),
+			//	new Vector3f(0, 1, -1),
+			//	new Vector3f(1, -1, -1));
+			//Vector3f normal = face.e1 ^ face.e2;
+			//face.n0 = face.n1 = face.n2 = normal;
 
-			//Color[,] img = new Color[16, 32];
-			//for (int h = 0; h < 16; h ++) {
-			//	for (int w = 0; w < 32; w ++) {
-			//		float rg = h / 16.0f;
-			//		float b = w / 32.0f;
-			//		img[h, w] = new Color(rg, rg, b);
-			//	}
-			//}
+			//Ray ray = new Ray(new Vector3f(), new Vector3f(0, 0, -1));
 
-			//ColorRGB8[,] simg = ImageTools.ColorConverter.ConvertToRGB8Image(img);
-			//ImageTools.ImageSave.ImageSave_PPM(simg, "A:\\testimg.ppm");
+			//RayCastResult rcr = face.Intersection(ray);
 
-			int[] nmbs = new int[10];
-			Random r = new Random();
-			for (int i = 0; i < nmbs.Length; i ++) {
-				nmbs[i] = r.Next(100);
-			}
-			for (int i = 0; i < nmbs.Length; i++) {
-				Console.Write($"{nmbs[i]}\t");
-			}
-			Console.WriteLine();
-			//int sid = QuickCoordation(nmbs.AsSpan());
-			//Console.WriteLine(sid);
-			//for (int i = 0; i < nmbs.Length; i++) {
-			//	Console.Write($"{nmbs[i]}\t");
-			//}
-			//Console.WriteLine();
+			//Console.WriteLine(rcr.happened) ;
 
-			Span<int> t = nmbs.AsSpan();
-			Span<int> lspan = t.Slice(0, 5);
-			Span<int> rspan = t.Slice(5);
-			foreach (var item in lspan) {
-				Console.Write($"{item}\t");
-			}
-			Console.WriteLine();
-			foreach (var item in rspan) {
-				Console.Write($"{item}\t");
-			}
-			Console.WriteLine();
+			Vector3f v1 = new Vector3f(1f, 1f, 1f);
+			Vector3f v2 = new Vector3f(2.001f, 2.001f, 2.001f);
+			Vector3f v3 = v1 ^ v2;
+			Console.WriteLine(v3);
+
+			Console.ReadLine();
 		}
 	}
 }

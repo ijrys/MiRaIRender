@@ -28,8 +28,6 @@ namespace MiRaIRender.BaseType.LightSource {
 		}
 
 		public override RayCastResult Intersection(Ray ray) {
-			RayCastResult result = new RayCastResult();
-
 			Vector3f A = ray.Origin, B = ray.Direction, C = Position;
 			Float a = Vector3f.Dot(B, B);
 			Float b = Vector3f.Dot(B, (A - C)) * 2.0f;
@@ -37,13 +35,13 @@ namespace MiRaIRender.BaseType.LightSource {
 
 			float drt = b * b - 4 * a * c;
 			if (drt < 0) {
-				return result;
+				return null;
 			}
 			drt = Math.Sqrt(drt);
 			float x1 = (-b + drt) / a / 2;
 			float x2 = (-b - drt) / a / 2;
 			if (x1 < 0 && x2 < 0) {
-				return result;
+				return null;
 			}
 
 			float d;
@@ -56,11 +54,13 @@ namespace MiRaIRender.BaseType.LightSource {
 			else {
 				d = x2;
 			}
+
+			RayCastResult result = new RayCastResult();
 			result.happened = true;
 			result.obj = this;
 			result.material = Material;
 			result.coords = ray.Origin + ray.Direction * d;
-			result.distance = (ray.Direction * d).Length();
+			result.distance =   d;
 			result.normal = (result.coords - Position).Normalize();
 
 			return result;

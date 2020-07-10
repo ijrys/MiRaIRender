@@ -1,4 +1,6 @@
-﻿namespace MiRaIRender.BaseType {
+﻿using MiRaIRender.BaseType.SceneObject;
+
+namespace MiRaIRender.BaseType {
 	/// <summary>
 	/// 光线
 	/// </summary>
@@ -16,6 +18,8 @@
 		/// </summary>
 		public Vector3f Direction_Inv;
 
+		public RenderObject OriginObject;
+
 		/// <summary>
 		/// 
 		/// </summary>
@@ -25,6 +29,7 @@
 			Origin = o;
 			Direction = d;
 			Direction_Inv = new Vector3f(1.0f / d.x, 1.0f / d.y, 1.0f / d.z);
+			OriginObject = null;
 		}
 	}
 }

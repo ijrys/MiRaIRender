@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiRaIRender.Render.PathTrac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageTools", "ImageTools\ImageTools.csproj", "{0F7B22BE-777F-4BE7-9484-0652865F6D45}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp1", "WpfApp1\WpfApp1.csproj", "{FACFEE70-43E6-4E97-8581-75A9D7021D7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,14 @@ Global
 		{0F7B22BE-777F-4BE7-9484-0652865F6D45}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0F7B22BE-777F-4BE7-9484-0652865F6D45}.Release|x64.ActiveCfg = Release|x64
 		{0F7B22BE-777F-4BE7-9484-0652865F6D45}.Release|x64.Build.0 = Release|x64
+		{FACFEE70-43E6-4E97-8581-75A9D7021D7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FACFEE70-43E6-4E97-8581-75A9D7021D7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FACFEE70-43E6-4E97-8581-75A9D7021D7D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FACFEE70-43E6-4E97-8581-75A9D7021D7D}.Debug|x64.Build.0 = Debug|Any CPU
+		{FACFEE70-43E6-4E97-8581-75A9D7021D7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FACFEE70-43E6-4E97-8581-75A9D7021D7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FACFEE70-43E6-4E97-8581-75A9D7021D7D}.Release|x64.ActiveCfg = Release|Any CPU
+		{FACFEE70-43E6-4E97-8581-75A9D7021D7D}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

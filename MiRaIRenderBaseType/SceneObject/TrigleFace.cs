@@ -36,32 +36,27 @@ namespace MiRaIRender.BaseType {
 		}
 
 		public override RayCastResult Intersection(Ray ray) {
-			RayCastResult result = new RayCastResult();
-
 			Float u, v, t_tmp = 0;
 			Vector3f pvec = ray.Direction ^ e2; // S1
 			Float det = e1 & pvec;
-
-			if (Math.Abs(det) < Tools.EPSILON) {
-				return result;
-			}
 
 			Float det_inv = 1.0f / det;
 			Vector3f tvec = ray.Origin - v0; // S
 			u = (tvec & pvec) * det_inv;
 			if (u < 0 || u > 1) {
-				return result;
+				return null;
 			}
 			Vector3f qvec = (tvec ^ e1); // S2
 			v = (ray.Direction & qvec) * det_inv;
 			if (v < 0 || u + v > 1) {
-				return result;
+				return null;
 			}
 			t_tmp = (e2 & qvec) * det_inv;
 			if (t_tmp < 0) {
-				return result;
+				return null;
 			}
 
+			RayCastResult result = new RayCastResult();
 			result.happened = true;
 			result.distance = t_tmp;
 			result.obj = this;
@@ -70,6 +65,37 @@ namespace MiRaIRender.BaseType {
 			result.uv = new Vector2f(u, v);
 			result.normal = Vector3f.UVMerge(u, v, n0, n1, n2);
 			return result;
+
+			//RayCastResult result = null;
+
+			//Vector3f P = ray.Direction ^ e2;
+			//Vector3f T = ray.Origin - v0;
+			//Vector3f Q = T ^ e1;
+			//Float det = P & e1;
+
+			//if (Math.Abs(det) < Tools.EPSILON) {
+			//	goto RTR;
+			//}
+
+			//det = 1.0f / det;
+			//Float t = Q & e2 * det;
+			//Float u = P & T * det;
+			//Float v = Q & ray.Direction * det;
+
+			//if (t < 0 || u + v > 1.0f) {
+			//	goto RTR;
+			//}
+
+			//result = new RayCastResult();
+			//result.happened = true;
+			//result.distance = t;
+			//result.obj = this;
+			//result.coords = ray.Origin + t * ray.Direction;
+			//result.uv = new Vector2f(u, v);
+			//result.normal = Vector3f.UVMerge(u, v, n0, n1, n2);
+			//RTR:
+			//	return result;
+
 		}
 
 		public override Vector3f SelectALightPoint(Vector3f rayFrom) {

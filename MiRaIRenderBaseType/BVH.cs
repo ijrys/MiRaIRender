@@ -12,35 +12,24 @@ namespace MiRaIRender.BaseType {
 		RenderObject[] Childs;
 
 		public RayCastResult Intersection(Ray ray) {
-			RayCastResult result = new RayCastResult();
 			if (!BoundsBox.Intersection(ray)) { // 未相交
-				return result;
+				return null;
 			}
-			RayCastResult lres = new RayCastResult();
-			RayCastResult rres = new RayCastResult();
-			RayCastResult cres = new RayCastResult();
+			RayCastResult lres = null;
+			RayCastResult rres = null;
 			if (Left != null) {
 				lres = Left.Intersection(ray);
 			}
 			if (Right != null) {
 				rres = Right.Intersection(ray);
 			}
+			RayCastResult result =  RayCastResult.BetterOne(lres, rres);
+
 			if (Childs != null) {
 				foreach (RenderObject obj in Childs) {
 					RayCastResult restmp = obj.Intersection(ray);
-					if (restmp.happened && (!cres.happened || cres.distance > restmp.distance)) {
-						cres = restmp;
-					}
+					result = RayCastResult.BetterOne(result, restmp);
 				}
-			}
-			if (lres.happened && (!result.happened || result.distance > lres.distance)) {
-				result = lres;
-			}
-			if (rres.happened && (!result.happened || result.distance > rres.distance)) {
-				result = rres;
-			}
-			if (cres.happened && (!result.happened || result.distance > cres.distance)) {
-				result = cres;
 			}
 
 			return result;
