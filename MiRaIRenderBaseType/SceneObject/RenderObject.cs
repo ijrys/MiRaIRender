@@ -1,7 +1,7 @@
 ﻿using Float = System.Single;
 
 namespace MiRaIRender.BaseType.SceneObject {
-	public abstract class RenderObject : IRenderObjectAble {
+	public abstract class RenderObject : IRayCastAble { //: IRenderObjectAble {
 
 		protected Bounds3 _boundBox;
 

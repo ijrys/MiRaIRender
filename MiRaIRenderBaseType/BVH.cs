@@ -5,28 +5,28 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace MiRaIRender.BaseType {
-	public class BVH {
-		public Bounds3 BoundsBox;
+	public class BVH : IRayCastAble {
+		//public BVH Left, Right;
+		IRayCastAble[] Childs;
+		public Bounds3 BoundBox { get; set; }
 
-		public BVH Left, Right;
-		RenderObject[] Childs;
 
 		public RayCastResult Intersection(Ray ray) {
-			if (!BoundsBox.Intersection(ray)) { // 未相交
+			if (!BoundBox.Intersection(ray)) { // 未相交
 				return null;
 			}
-			RayCastResult lres = null;
-			RayCastResult rres = null;
-			if (Left != null) {
-				lres = Left.Intersection(ray);
-			}
-			if (Right != null) {
-				rres = Right.Intersection(ray);
-			}
-			RayCastResult result =  RayCastResult.BetterOne(lres, rres);
+			//RayCastResult lres = null;
+			//RayCastResult rres = null;
+			//if (Left != null) {
+			//	lres = Left.Intersection(ray);
+			//}
+			//if (Right != null) {
+			//	rres = Right.Intersection(ray);
+			//}
+			RayCastResult result = null; // RayCastResult.BetterOne(lres, rres);
 
 			if (Childs != null) {
-				foreach (RenderObject obj in Childs) {
+				foreach (IRayCastAble obj in Childs) {
 					RayCastResult restmp = obj.Intersection(ray);
 					result = RayCastResult.BetterOne(result, restmp);
 				}
@@ -184,15 +184,17 @@ namespace MiRaIRender.BaseType {
 			return aimid;
 		}
 
-		public static BVH Build<T>(Span<T> objs) where T:RenderObject {
+		public static BVH Build<T>(Span<T> objs) where T : RenderObject {
 			Bounds3 boundbox = objs[0].BoundBox;
 			foreach (var item in objs) {
 				boundbox = Bounds3.Union(boundbox, item.BoundBox);
 			}
-			BVH re = new BVH() { BoundsBox = boundbox };
+
+			BVH re = new BVH() { BoundBox = boundbox };
 			if (objs.Length < 5) {
 				re.Childs = objs.ToArray();
-				return re;
+				goto RTPoint;
+				//return re;
 			}
 
 			int divideWay = 0;
@@ -225,9 +227,12 @@ namespace MiRaIRender.BaseType {
 			else {
 				dividePoint = QuickCoordationZ(objs);
 			}
-			re.Left = Build(objs.Slice(0, dividePoint));
-			re.Right = Build(objs.Slice(dividePoint));
 
+			BVH l = Build(objs.Slice(0, dividePoint));
+			BVH r = Build(objs.Slice(dividePoint));
+			re.Childs = new IRayCastAble[] { l, r };
+
+		RTPoint:
 			return re;
 		}
 	}

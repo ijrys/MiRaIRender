@@ -31,5 +31,12 @@ namespace MiRaIRender.BaseType {
 			Direction_Inv = new Vector3f(1.0f / d.x, 1.0f / d.y, 1.0f / d.z);
 			OriginObject = null;
 		}
+
+		public Ray(Vector3f o, Vector3f d, RenderObject originObject) {
+			Origin = o;
+			Direction = d;
+			Direction_Inv = new Vector3f(1.0f / d.x, 1.0f / d.y, 1.0f / d.z);
+			OriginObject = originObject;
+		}
 	}
 }

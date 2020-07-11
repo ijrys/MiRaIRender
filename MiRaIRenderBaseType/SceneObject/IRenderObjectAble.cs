@@ -1,8 +1,8 @@
 ﻿namespace MiRaIRender.BaseType.SceneObject {
-	public interface IRenderObjectAble {
+	//public interface IRenderObjectAble {
 
-		Bounds3 BoundBox { get; }
+	//	Bounds3 BoundBox { get; }
 
-		Vector2f UV2XY(Vector2f uv);
-	}
+	//	Vector2f UV2XY(Vector2f uv);
+	//}
 }

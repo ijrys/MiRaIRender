@@ -2,78 +2,63 @@
 using MiRaIRender.BaseType;
 using System;
 using Float = System.Single;
+using VectorT = MiRaIRender.BaseType.Vector3f;
+using VectorS = MiRaIRender.BaseType.SIMD.Vector3f;
+using VectorA = System.Numerics.Vector3;
+using System.Numerics;
+
 namespace Test {
 	class Program {
-		public static Float GetRadianByAngle(Float angle) {
-			return (angle % 360) * MathF.PI / 180.0f;
-		}
-		private static int QuickCoordation(Span<int> objs) {
-			int len = objs.Length;
-			int aimid = len / 2;
-			int s = 0, e = len, f = 1, t = len - 1;
-			while (s < e - 1) {
-				f = s + 1;
-				t = e - 1;
-				while (f < t) {
-					// 前找大
-					while (f < t) {
-						if (objs[f] > objs[s]) {
-							break;
-						}
-						f++;
-					}
-					// 后找小
-					while (f < t) {
-						if (objs[t] < objs[s]) {
-							break;
-						}
-						t--;
-					}
-					// 交换
-					if (f != t) {
-						var tmp = objs[f];
-						objs[f] = objs[t];
-						objs[t] = tmp;
-					}
-				}
-				if (objs[f] > objs[s]) {
-					f--;
-				}
-				if (f != s) {
-					var tmp = objs[f];
-					objs[f] = objs[s];
-					objs[s] = tmp;
-				}
-				if (f == aimid) {
-					return aimid;
-				}
-				if (f < aimid) {
-					s = f + 1;
-				}
-				else {
-					e = f;
-				}
+
+		static void Test1 () {
+			for (int i = 0; i < 10000000; i ++) {
+				VectorT v1 = new VectorT(2.0f, 0.0f, 0.0f);
+				VectorT v2 = new VectorT(0.0f, 2.0f, 0.0f);
+				VectorT v3 = v1 + v2;
+				VectorT v4 = v1 - v2;
+				VectorT v5 = v1 * 0.5f;
+				VectorT v6 = v1 / 0.5f;
 			}
-			return aimid;
+		}
+		static void Test2() {
+			for (int i = 0; i < 10000000; i++) {
+				VectorS v1 = new VectorS(2.0f, 0.0f, 0.0f);
+				VectorS v2 = new VectorS(0.0f, 2.0f, 0.0f);
+				VectorS v3 = v1 + v2;
+				VectorS v4 = v1 - v2;
+				VectorS v5 = v1 * 0.5f;
+				VectorS v6 = v1 / 0.5f;
+			}
+		}
+
+		static void Test3() {
+			for (int i = 0; i < 10000000; i++) {
+				VectorA v1 = new VectorA(2.0f, 0.0f, 0.0f);
+				VectorA v2 = new VectorA(0.0f, 2.0f, 0.0f);
+				VectorA v3 = v1 + v2;
+				VectorA v4 = v1 - v2;
+				VectorA v5 = v1 * 0.5f;
+				VectorA v6 = v1 / 0.5f;
+			}
 		}
 		static void Main(string[] args) {
-			//TrigleFace face = new TrigleFace(
-			//	new Vector3f(-1, -1, -1),
-			//	new Vector3f(0, 1, -1),
-			//	new Vector3f(1, -1, -1));
-			//Vector3f normal = face.e1 ^ face.e2;
-			//face.n0 = face.n1 = face.n2 = normal;
+			for (int i = 0; i < 10; i ++) {
+				DateTime b, e;
+				b = DateTime.Now;
+				Test1();
+				e = DateTime.Now;
+				Console.WriteLine($"r{i + 1} test 1: {e - b}");
 
-			//Ray ray = new Ray(new Vector3f(), new Vector3f(0, 0, -1));
+				b = DateTime.Now;
+				Test2();
+				e = DateTime.Now;
+				Console.WriteLine($"r{i + 1} test 2: {e - b}");
 
-			//RayCastResult rcr = face.Intersection(ray);
-
-			//Console.WriteLine(rcr.happened) ;
-
-			Vector3f v1 = new Vector3f(1f, 1f, 1f);
-			Vector3f v2 = new Vector3f(2.001f, 2.001f, 2.001f);
-			Vector3f v3 = v1 ^ v2;
-			Console.WriteLine(v3);
+				b = DateTime.Now;
+				Test3();
+				e = DateTime.Now;
+				Console.WriteLine($"r{i + 1} test 3: {e - b}");
+			}
 
 			Console.ReadLine();
 		}

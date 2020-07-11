@@ -40,8 +40,8 @@ namespace MiRaIRender.BaseType {
 		/// <param name="ray"></param>
 		/// <returns></returns>
 		public bool Intersection(Ray ray) {
-			Vector3f tmins = (pMin - ray.Origin) / ray.Direction;
-			Vector3f tmaxs = (pMax - ray.Origin) / ray.Direction;
+			Vector3f tmins = (pMin - ray.Origin) * ray.Direction_Inv;
+			Vector3f tmaxs = (pMax - ray.Origin) * ray.Direction_Inv;
 
 			float tmin = Vector3f.Min(tmins, tmaxs).MaxValue();
 			float tmax = Vector3f.Max(tmins, tmaxs).MinValue();

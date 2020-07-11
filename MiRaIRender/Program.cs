@@ -151,7 +151,7 @@ namespace MiRaIRender {
 				SubSampleNumberPerPixel = 160 //16
 			};
 			PathTraceRender render = new PathTraceRender() {
-				Scene = Test3(),
+				Scene = Test1(),
 				Options = options
 			};
 			DateTime begin = DateTime.Now;

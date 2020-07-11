@@ -56,13 +56,8 @@ namespace MiRaIRender.Render.PathTrace {
 				RenderBlock renderBlock = RenderBlocks[blockId];
 				Console.WriteLine($"rending block {blockId} : {renderBlock.l}, {renderBlock.t} => {renderBlock.r}, {renderBlock.b}");
 				for (int j = renderBlock.t; j < renderBlock.b; j++) {
-					//Console.WriteLine("rendering " + j);
 					Float y = ymax - j * pixelLength;
 					for (int i = renderBlock.l; i < renderBlock.r; i++) {
-						if (i == 300 && j == 400) {
-							Console.WriteLine(scene.LightObjects.Count);
-						}
-
 						Float x = xmin + i * pixelLength;
 
 						Color color = new Color();
@@ -81,13 +76,13 @@ namespace MiRaIRender.Render.PathTrace {
 					}
 				}
 
-				lock (imgLock) {
+				//lock (imgLock) {
 					for (int j = renderBlock.t; j < renderBlock.b; j++) {
 						for (int i = renderBlock.l; i < renderBlock.r; i++) {
 							img[j, i] = imgTmp[j - renderBlock.t, i - renderBlock.l];
 						}
 					}
-				}
+				//}
 			}
 		}
 
@@ -129,6 +124,7 @@ namespace MiRaIRender.Render.PathTrace {
 			th1.Join();
 			th2.Join();
 			th3.Join();
+			//RenderABlock();
 
 			return img;
 		}
@@ -179,7 +175,7 @@ namespace MiRaIRender.Render.PathTrace {
 			{
 				Float roughtness = rcr.material.Roughness;
 				Vector3f traceDir = (Tools.Reflect(ray.Direction, rcr.normal) + Tools.RandomPointInSphere() * roughtness).Normalize();
-				Ray traceRay = new Ray(rcr.coords + traceDir * 0.0002f, traceDir);
+				Ray traceRay = new Ray(rcr.coords, traceDir, rcr.obj);
 				color = PathTrace(traceRay, deepLast - 1, random);
 				color *= baseColor;
 				goto RTPoint;
@@ -201,7 +197,7 @@ namespace MiRaIRender.Render.PathTrace {
 		DiffuseColor:
 			{
 				Vector3f traceDir = (rcr.normal + Tools.RandomPointInSphere() * rcr.material.Roughness).Normalize();
-				Ray traceRay = new Ray(rcr.coords + traceDir * 0.0001f, traceDir);
+				Ray traceRay = new Ray(rcr.coords, traceDir, rcr.obj);
 				color = PathTrace(traceRay, deepLast - 1, random);
 				color *= baseColor;
 
@@ -216,7 +212,7 @@ namespace MiRaIRender.Render.PathTrace {
 						continue;
 					}
 					dir = dir.Normalize();
-					Ray r = new Ray(rcr.coords + dir * 0.0001f, dir.Normalize());
+					Ray r = new Ray(rcr.coords, dir, rcr.obj);
 					RayCastResult rayCastResult = Scene.Intersection(r);
 					if (rayCastResult == null || rayCastResult.obj != item) { // 中间遮挡
 						continue;

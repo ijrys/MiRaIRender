@@ -6,9 +6,4 @@
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\MiRaIRender.Render.PathTrace\MiRaIRender.Render.PathTrace.csproj" />
-    <ProjectReference Include="..\MiRaIRenderBaseType\MiRaIRender.BaseType.csproj" />
-  </ItemGroup>
-
 </Project>

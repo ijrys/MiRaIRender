@@ -36,6 +36,7 @@ namespace MiRaIRender.BaseType {
 		}
 
 		public override RayCastResult Intersection(Ray ray) {
+			if (ray.OriginObject == this) { return null; }
 			Float u, v, t_tmp = 0;
 			Vector3f pvec = ray.Direction ^ e2; // S1
 			Float det = e1 & pvec;
@@ -64,6 +65,7 @@ namespace MiRaIRender.BaseType {
 			result.coords = ray.Origin + t_tmp * ray.Direction;
 			result.uv = new Vector2f(u, v);
 			result.normal = Vector3f.UVMerge(u, v, n0, n1, n2);
+			result.internalPoint = ((result.normal & ray.Direction) < 0);
 			return result;
 
 			//RayCastResult result = null;
