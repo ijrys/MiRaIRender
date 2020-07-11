@@ -1,11 +1,21 @@
 ﻿using MiRaIRender.BaseType;
 using MiRaIRender.BaseType.SceneObject;
 using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Float = System.Single;
 using Math = System.MathF;
 
 namespace MiRaIRender.Render.PathTrace {
 	public class PathTraceRender {
+
+		private struct RenderBlock {
+			public int l;
+			public int r;
+			public int t;
+			public int b;
+		}
 
 		private Scene scene;
 
@@ -16,6 +26,71 @@ namespace MiRaIRender.Render.PathTrace {
 
 		public PathTraceRenderOptions Options;
 
+
+		Color[,] img;
+		RenderBlock[] RenderBlocks;
+		int nextBlockId = 0;
+		object renderBlocksLock = new object(), imgLock = new object();
+
+		public void RenderABlock() {
+			int height = Options.Height,
+				width = Options.Width,
+				subSampleNumberPerPixel = Options.SubSampleNumberPerPixel,
+				traceDeep = Options.TraceDeep;
+			Float xmin = Math.Tan(Tools.GetRadianByAngle(Options.FovHorizon / 2));
+			Float pixelLength = (xmin * 2) / width;
+			Float ymax = xmin / width * height;
+			xmin = -xmin;
+
+			Color[,] imgTmp = new Color[32, 32];
+
+			while (RenderBlocks != null) {
+				int blockId;
+				lock (renderBlocksLock) {
+					blockId = nextBlockId;
+					nextBlockId++;
+				}
+				if (blockId >= RenderBlocks.Length) {
+					break;
+				}
+				RenderBlock renderBlock = RenderBlocks[blockId];
+				Console.WriteLine($"rending block {blockId} : {renderBlock.l}, {renderBlock.t} => {renderBlock.r}, {renderBlock.b}");
+				for (int j = renderBlock.t; j < renderBlock.b; j++) {
+					//Console.WriteLine("rendering " + j);
+					Float y = ymax - j * pixelLength;
+					for (int i = renderBlock.l; i < renderBlock.r; i++) {
+						if (i == 300 && j == 400) {
+							Console.WriteLine(scene.LightObjects.Count);
+						}
+
+						Float x = xmin + i * pixelLength;
+
+						Color color = new Color();
+						Random random = new Random(Options.RandonSeed + j * width + i);
+						for (int k = 0; k < subSampleNumberPerPixel; k++) {
+							Float xt = (Float)random.NextDouble() * pixelLength;
+							Float yt = (Float)random.NextDouble() * pixelLength;
+
+							Vector3f dir = new Vector3f(x + xt, y + yt, -1.0f).Normalize();
+							Ray r = new Ray(Options.CameraOrigin, dir);
+							Color c= PathTrace(r, traceDeep, random);
+							color += c;
+						}
+						color /= subSampleNumberPerPixel;
+						imgTmp[j - renderBlock.t, i - renderBlock.l] = color;
+					}
+				}
+
+				lock (imgLock) {
+					for (int j = renderBlock.t; j < renderBlock.b; j++) {
+						for (int i = renderBlock.l; i < renderBlock.r; i++) {
+							img[j, i] = imgTmp[j - renderBlock.t, i - renderBlock.l];
+						}
+					}
+				}
+			}
+		}
+
 		public Color[,] RenderImg() {
 			scene.PreRender();
 
@@ -24,39 +99,41 @@ namespace MiRaIRender.Render.PathTrace {
 				subSampleNumberPerPixel = Options.SubSampleNumberPerPixel,
 				traceDeep = Options.TraceDeep;
 
-			Float xmin = Math.Tan(Tools.GetRadianByAngle(Options.FovHorizon / 2));
-			Float pixelLength = (xmin * 2) / width;
-			Float ymax = xmin / width * height;
-			xmin = -xmin;
-			Random random;// = Options.Random;
+			img = new Color[height, width];
 
-			Color[,] img = new Color[height, width];
-
-			for (int j = 0; j < height; j++) {
-				Console.WriteLine("rendering " + j);
-				Float y = ymax - j * pixelLength;
-				for (int i = 0; i < width; i++) {
-					Float x = xmin + i * pixelLength;
-
-					Color color = new Color();
-					random = new Random(Options.RandonSeed + j * width + i);
-					for (int k = 0; k < subSampleNumberPerPixel; k++) {
-						Float xt = (Float)random.NextDouble() * pixelLength;
-						Float yt = (Float)random.NextDouble() * pixelLength;
-
-						Vector3f dir = new Vector3f(x + xt, y + yt, -1.0f).Normalize();
-						Ray r = new Ray(Options.CameraOrigin, dir);
-						color += PathTrace(r, traceDeep) / subSampleNumberPerPixel;
+			{ // 准备渲染块
+				List<RenderBlock> renderBlocks = new List<RenderBlock>();
+				const int blocksize = 32;
+				for (int blockj = 0; blockj * blocksize < height; blockj++) {
+					for (int blocki = 0; blocki * blocksize < width; blocki++) {
+						RenderBlock block = new RenderBlock();
+						block.l = blocki * blocksize;
+						block.t = blockj * blocksize;
+						block.r = block.l + blocksize;
+						if (block.r > width) { block.r = width; }
+						block.b = block.t + blocksize;
+						if (block.b > height) { block.b = height; }
+						renderBlocks.Add(block);
 					}
-
-					img[j, i] = color;
 				}
+				RenderBlocks = renderBlocks.ToArray();
+				nextBlockId = 0;
 			}
+
+			Thread th1 = new Thread(RenderABlock);
+			Thread th2 = new Thread(RenderABlock);
+			Thread th3 = new Thread(RenderABlock);
+			th1.Start();
+			th2.Start();
+			th3.Start();
+			th1.Join();
+			th2.Join();
+			th3.Join();
 
 			return img;
 		}
 
-		private Color PathTrace(Ray ray, int deepLast) {
+		private Color PathTrace(Ray ray, int deepLast, Random random) {
 			if (deepLast < 0) return Color.Dark;
 			RayCastResult rcr = scene.Intersection(ray);
 
@@ -65,19 +142,21 @@ namespace MiRaIRender.Render.PathTrace {
 			}
 
 			Color color;
+			//bool Reflection = false;
 			Vector2f mapCoords = rcr.obj.UV2XY(rcr.uv);
 			Color baseColor = rcr.material.BaseColor.Color(mapCoords);
 
-			int rvallue = Options.Random.Next() & 0xFFFF;
+			int rvallue = random.Next() & 0xFFFF;
 			{
 				Float rrate = 0.0f;
 				Float rtrans = 0.0f;
 				if (rcr.material.Refraction.Enable) { // 启用折射
-					//rrate = Tools.FresnelEquation(rcr.normal & (-ray.Direction), )
-						
-						//(rcr.material.Metallic.GetMetallic(mapCoords), rcr.normal & (-ray.Direction));
+													  //rrate = Tools.FresnelEquation(rcr.normal & (-ray.Direction), )
+
+					//(rcr.material.Metallic.GetMetallic(mapCoords), rcr.normal & (-ray.Direction));
 					rtrans = 0.0f;//(1.0f - rrate) * (1.0f - rcr.material.Refraction.GetRefraction(rcr.obj.UV2XY( rcr.uv)));
-				} else { // 未启用折射
+				}
+				else { // 未启用折射
 					rrate = Tools.Schlick(rcr.material.Metallic.GetMetallic(mapCoords), rcr.normal & (-ray.Direction));
 					rtrans = 0.0f;//(1.0f - rrate) * (1.0f - rcr.material.Refraction.GetRefraction(rcr.obj.UV2XY( rcr.uv)));
 				}
@@ -101,8 +180,8 @@ namespace MiRaIRender.Render.PathTrace {
 				Float roughtness = rcr.material.Roughness;
 				Vector3f traceDir = (Tools.Reflect(ray.Direction, rcr.normal) + Tools.RandomPointInSphere() * roughtness).Normalize();
 				Ray traceRay = new Ray(rcr.coords + traceDir * 0.0002f, traceDir);
-				color = PathTrace(traceRay, deepLast - 1) * baseColor;
-
+				color = PathTrace(traceRay, deepLast - 1, random);
+				color *= baseColor;
 				goto RTPoint;
 			}
 		#endregion
@@ -123,9 +202,13 @@ namespace MiRaIRender.Render.PathTrace {
 			{
 				Vector3f traceDir = (rcr.normal + Tools.RandomPointInSphere() * rcr.material.Roughness).Normalize();
 				Ray traceRay = new Ray(rcr.coords + traceDir * 0.0001f, traceDir);
-				color = PathTrace(traceRay, deepLast - 1) * baseColor;
+				color = PathTrace(traceRay, deepLast - 1, random);
+				color *= baseColor;
 
 				Vector3f vitureNormal = rcr.normal; // todo get normal by normal texture
+				if (scene.r_LightObjects.Length == 0) {
+					Console.WriteLine("LightError");
+				}
 				foreach (RenderObject item in scene.r_LightObjects) {
 					Vector3f apoint = item.SelectALightPoint(rcr.coords);
 					Vector3f dir = apoint - rcr.coords;
