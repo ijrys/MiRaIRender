@@ -5,21 +5,8 @@ namespace MiRaIRender.BaseType {
 	/// <summary>
 	/// 三角形网格对象
 	/// </summary>
-	public class MashTrigle : RenderObject {
-		TrigleFace[] trigles;
-		private Materials.Material _material = new Materials.Material();
-
-		public Materials.Material Material {
-			get => _material;
-			set {
-				//if (trigles != null) {
-				//	foreach (TrigleFace t in trigles) {
-				//		t.material = value;
-				//	}
-				//}
-				_material = value;
-			}
-		}
+	public class MashTrigle : SceneObject.SceneObjectA {
+		public TrigleFace[] trigles;
 
 		private BVH BVH;
 

@@ -5,153 +5,75 @@ using MiRaIRender.BaseType.Materials;
 using MiRaIRender.Render.PathTrace;
 using ModelLoader;
 using System;
+using System.IO;
 using System.Numerics;
 namespace MiRaIRender {
 	class Program {
-		static Scene Test1 () {
-			Scene scene = new Scene();
-
-			MashTrigle[] objs;
-			MashTrigle obj;
-			//objs = OBJLoader.LoadModel("A:\\m3_1.obj");
-			objs = OBJLoaderWNormalSmooth.LoadModel("A:\\m3_1.obj");
-			obj = objs[0];
-			//obj.Material.Metallic.Metallic = 0.3f;
-			obj.Material.Roughness = 0.8f;
-			//obj.Material.BaseColor = new PureColorMaterialMap(new Color(0.95f, 0.95f, 0.95f));
-			scene.Objects.Add(obj);
-
-			objs = OBJLoader.LoadModel("A:\\m3_2.obj");
-			obj = objs[0];
-			obj.Material.Metallic.Metallic = 0.9f;
-			obj.Material.Roughness = 0.2f;
-			obj.Material.BaseColor = new PureColorMaterialMap(new Color(0.3f, 0.3f, 0.3f));
-			scene.Objects.Add(obj);
-
-			//obj.Material.BaseColor = new PureColorMaterialMap(new Color(0.1f));
-
-			PointLight pLight1 = new PointLight() {
-				Position = new Vector3f(-5, 5, 0),
-				R = 0.2f,
-			};
-			pLight1.Material.Light.Intensity = new Color(200.0f, 10.0f, 10.0f);
-			PointLight pLight2 = new PointLight() {
-				Position = new Vector3f(5, 5, -1),
-				R = 0.2f,
-			};
-			pLight2.Material.Light.Intensity = new Color(10.0f, 10.0f, 200.0f);
-			scene.LightObjects.Add(pLight1);
-			scene.LightObjects.Add(pLight2);
-			scene.Objects.Add(pLight1);
-			scene.Objects.Add(pLight2);
-
-			PointLight pLight;
-			pLight = new PointLight() {
-				Position = new Vector3f(0, 5, 2)
-			};
-			pLight.Material.Light.Intensity = new Color(30.0f);
-			scene.Objects.Add(pLight);
-			scene.LightObjects.Add(pLight);
-
-			//pLight = new PointLight() {
-			//	Position = new Vector3f(-5, 5, 1)
-			//};
-			//pLight.Material.Light.Intensity = new Color(30.0f);
-			//scene.Objects.Add(pLight);
-			//scene.LightObjects.Add(pLight);
-
-			return scene;
-		}
-		static Scene Test3() {
-			Scene scene = new Scene();
-
-			MashTrigle[] objs;
-			MashTrigle obj;
-			//objs = OBJLoader.LoadModel("A:\\m3_1.obj");
-			objs = OBJLoaderWNormalSmooth.LoadModel("A:\\m3_1.obj");
-			obj = objs[0];
-			obj.Material.Metallic.Metallic = 0.9f;
-			obj.Material.Roughness = 0.5f;
-			obj.Material.BaseColor = new PureColorMaterialMap(new Color(0.95f, 0.95f, 0.95f));
-			scene.Objects.Add(obj);
-
-			objs = OBJLoader.LoadModel("A:\\m3_2.obj");
-			obj = objs[0];
-			obj.Material.Metallic.Metallic = 0.9f;
-			obj.Material.Roughness = 0.8f;
-			obj.Material.BaseColor = new PureColorMaterialMap(new Color(0.3f, 0.3f, 0.3f));
-			scene.Objects.Add(obj);
-
-			//obj.Material.BaseColor = new PureColorMaterialMap(new Color(0.1f));
-
-			PointLight pLight1 = new PointLight() {
-				Position = new Vector3f(-5, 5, 0),
-				R = 0.2f,
-			};
-			pLight1.Material.Light.Intensity = new Color(200.0f, 10.0f, 10.0f);
-			PointLight pLight2 = new PointLight() {
-				Position = new Vector3f(5, 5, -1),
-				R = 0.2f,
-			};
-			pLight2.Material.Light.Intensity = new Color(10.0f, 10.0f, 200.0f);
-			scene.LightObjects.Add(pLight1);
-			scene.LightObjects.Add(pLight2);
-			scene.Objects.Add(pLight1);
-			scene.Objects.Add(pLight2);
-
-			PointLight pLight;
-			pLight = new PointLight() {
-				Position = new Vector3f(0, 5, 2)
-			};
-			pLight.Material.Light.Intensity = new Color(30.0f);
-			scene.Objects.Add(pLight);
-			scene.LightObjects.Add(pLight);
-
-			return scene;
-		}
-		static Scene Test2 () {
-			Scene scene = new Scene();
-			MashTrigle[] objs;
-			MashTrigle obj;
-			objs = OBJLoader.LoadModel("A:\\t2.obj");
-			obj = objs[0];
-			//obj.Material.Metallic.Metallic = 0.3f;
-			obj.Material.Roughness = 0.8f;
-			//obj.Material.BaseColor = new PureColorMaterialMap(new Color(0.95f, 0.95f, 0.95f));
-			scene.Objects.Add(obj);
-
-			PointLight pLight1 = new PointLight() {
-				Position = new Vector3f(-5, 5, 0),
-				R = 0.2f,
-			};
-			pLight1.Material.Light.Intensity = new Color(200.0f, 10.0f, 10.0f);
-			PointLight pLight2 = new PointLight() {
-				Position = new Vector3f(5, 5, -1),
-				R = 0.2f,
-			};
-			pLight2.Material.Light.Intensity = new Color(10.0f, 10.0f, 200.0f);
-			scene.LightObjects.Add(pLight1);
-			scene.LightObjects.Add(pLight2);
-			scene.Objects.Add(pLight1);
-			scene.Objects.Add(pLight2);
-
-			return scene;
-		}
-
 		static void Main(string[] args) {
-			
+			string projectPath = null;
+			string configPath = null;
+			string outputPath = null;
 
-			PathTraceRenderOptions options = new PathTraceRenderOptions() {
-				RandonSeed = 20200708,
-				CameraOrigin = new Vector3f(0.0f, 0.7f, 4.0f),
-				Width = 1200,//100,
-				Height = 900,//75,
-				FovHorizon = 60,
-				TraceDeep = 4,
-				SubSampleNumberPerPixel = 160 //16
-			};
+			foreach (string item in args) {
+				string iteml = item.ToLower();
+
+				if (iteml.EndsWith(".mrirpro")) {
+					projectPath = item;
+				}
+				else if (iteml.EndsWith(".rconf")) {
+					configPath = item;
+				}
+				else {
+					outputPath = item;
+				}
+			}
+			if (string.IsNullOrEmpty(projectPath)) {
+				Console.WriteLine("Error Need Project File");
+				return;
+			}
+			if (string.IsNullOrEmpty(configPath)) {
+				Console.WriteLine("Error Need Render Config File");
+				return;
+			}
+			if (string.IsNullOrEmpty(outputPath)) {
+				Console.WriteLine("Need Output File Name");
+				return;
+			}
+			Console.WriteLine($"Project: {projectPath}");
+			Console.WriteLine($"Config : {configPath}");
+			Console.WriteLine($"Output : {outputPath}");
+			if (File.Exists(outputPath)) {
+				string uinp;
+				do {
+					Console.WriteLine("Output file already exist, overwrite it?(y/n)");
+					uinp = Console.ReadLine();
+					if (uinp.ToLower() == "n") {
+						return;
+					}
+					if (uinp.ToLower() == "y") {
+						break;
+					}
+				}
+				while (true);
+			}
+
+			(Scene scene, bool ok) = MiRaIRanderProjectLoader.LoadScene(projectPath);
+			if (!ok) {
+				Console.WriteLine("project load error");
+				return;
+			}
+
+			PathTraceRenderOptions options;
+
+			string[] optCont = File.ReadAllLines(configPath);
+			(options, ok) = PathTraceRenderOptions.LoadOptions(optCont);
+			if (!ok) {
+				Console.WriteLine("config load error");
+				return;
+			}
+
 			PathTraceRender render = new PathTraceRender() {
-				Scene = Test1(),
+				Scene = scene,
 				Options = options
 			};
 			DateTime begin = DateTime.Now;
@@ -160,10 +82,10 @@ namespace MiRaIRender {
 			Console.WriteLine($"Render end, use time {(end - begin)}");
 
 			ColorRGB8[,] simg = ImageTools.ColorConverter.ConvertToRGB8Image(img);
-			string fname = $"A:\\img\\{FileName()}";
+			//string fname = $"A:\\img\\{FileName()}";
 
-			Console.WriteLine("save to " + fname + ".ppm");
-			ImageSave.ImageSave_PPM(simg, fname + ".ppm");
+			Console.WriteLine("save to " + outputPath);
+			ImageSave.ImageSave_PPM(simg, outputPath);
 		}
 		static string FileName() {
 			DateTime time = DateTime.Now;

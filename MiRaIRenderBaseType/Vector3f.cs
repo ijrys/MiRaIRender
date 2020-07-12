@@ -173,5 +173,13 @@ namespace MiRaIRender.BaseType {
 			return (1.0f - u - v) * v0 + u * v1 + v * v2;
 		}
 		#endregion
+
+		#region static values
+		public static readonly Vector3f Zero = new Vector3f(0.0f);
+		public static readonly Vector3f OneX = new Vector3f(1.0f, 0.0f, 0.0f);
+		public static readonly Vector3f OneY = new Vector3f(0.0f, 1.0f, 0.0f);
+		public static readonly Vector3f OneZ = new Vector3f(0.0f, 0.0f, 1.0f);
+
+		#endregion
 	}
 }

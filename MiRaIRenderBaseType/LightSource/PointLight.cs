@@ -7,7 +7,7 @@ using Math = System.MathF;
 using Float = System.Single;
 
 namespace MiRaIRender.BaseType.LightSource {
-	public class PointLight : RenderObject {
+	public class PointLight : SceneObject.SceneObjectA {
 		
 		/// <summary>
 		/// 光源位置
@@ -15,11 +15,6 @@ namespace MiRaIRender.BaseType.LightSource {
 		public Vector3f Position;
 
 		public Float R = 0.1f;
-
-		public Material Material {
-			get;
-			private set;
-		}
 
 		public PointLight() {
 			Material = new Material();

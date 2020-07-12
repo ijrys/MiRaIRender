@@ -14,15 +14,15 @@ namespace MiRaIRender.BaseType.Materials {
 		/// </summary>
 		public Float Metallic = 0.2f;
 
-		/// <summary>
-		/// 是否启用强度贴图
-		/// </summary>
-		public bool EnableMap = false;
+		///// <summary>
+		///// 是否启用强度贴图
+		///// </summary>
+		//public bool EnableMap = false;
 
 		/// <summary>
 		/// 强度贴图
 		/// </summary>
-		public IMaterialGrayMapAble IntensityMap = new PureGrayMaterialMap() { BaseGray = 0.2f };
+		public IMaterialGrayMapAble IntensityMap = null; //new PureGrayMaterialMap() { BaseGray = 0.2f };
 
 		/// <summary>
 		/// 获取金属度
@@ -31,7 +31,7 @@ namespace MiRaIRender.BaseType.Materials {
 		/// <returns></returns>
 		public Float GetMetallic(Vector2f xy) {
 			Float re = Metallic;
-			if (EnableMap && (IntensityMap != null)) {
+			if (IntensityMap != null) {
 				re *= IntensityMap.Lightness(xy);
 			}
 			return re;
@@ -40,7 +40,7 @@ namespace MiRaIRender.BaseType.Materials {
 		/// <summary>
 		/// 金属吸收色贴图
 		/// </summary>
-		public IMaterialMapAble MetallicColor = null;
+		public IMaterialMapAble MetallicColorMap = null;
 
 		/// <summary>
 		/// 获取金属吸收色
@@ -48,10 +48,10 @@ namespace MiRaIRender.BaseType.Materials {
 		/// <param name="xy"></param>
 		/// <returns></returns>
 		public Color GetMetallicColor(Vector2f xy) {
-			if (MetallicColor == null) {
+			if (MetallicColorMap == null) {
 				return new Color(0.9f);
 			}
-			return MetallicColor.Color(xy);
+			return MetallicColorMap.Color(xy);
 		}
 	}
 }

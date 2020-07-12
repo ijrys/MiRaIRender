@@ -7,29 +7,30 @@ namespace MiRaIRender.BaseType {
 	/// 场景
 	/// </summary>
 	public class Scene {
-		public RenderObject[] r_Objects;
-		public RenderObject[] r_LightObjects;
+		public SceneObjectA[] r_Objects;
+		public SceneObjectA[] r_LightObjects;
 
-		public List<RenderObject> Objects = new List<RenderObject>();
-
-		public List<RenderObject> LightObjects = new List<RenderObject>();
+		public List<SceneObjectA> Objects = new List<SceneObjectA>();
 
 		public ISkyBoxAble SkyBox = DefaultSkyBox.Default;
 
 		public RayCastResult Intersection(Ray ray) {
 			RayCastResult result = null;
-			foreach (RenderObject o in r_Objects) {
-				//if (o == this.r_Objects[1]) {
-				//	System.Console.WriteLine("a");
-				//}
+			foreach (SceneObjectA o in r_Objects) {
 				RayCastResult re = o.Intersection(ray);
 				result = RayCastResult.BetterOne(result, re);
 			}
 			return result;
 		}
 
-		public void PreRender () {
+		public void PreRender() {
 			r_Objects = Objects.ToArray();
+			List<SceneObjectA> LightObjects = new List<SceneObjectA>();
+			foreach (SceneObject.SceneObjectA obj in r_Objects) {
+				if (obj.Material.Light.Enable) {
+					LightObjects.Add(obj);
+				}
+			}
 			r_LightObjects = LightObjects.ToArray();
 		}
 	}
