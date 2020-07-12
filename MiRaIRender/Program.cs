@@ -10,7 +10,7 @@ using System.Numerics;
 namespace MiRaIRender {
 	class Program {
 		static void Main(string[] args) {
-			Console.WriteLine("MiRaIRender 1.2.0.3");
+			Console.WriteLine("MiRaIRender 1.2.0.4");
 			string projectPath = null;
 			string configPath = null;
 			string outputPath = null;
@@ -88,10 +88,10 @@ namespace MiRaIRender {
 			Console.WriteLine("save to " + outputPath);
 			ImageSave.ImageSave_PPM(simg, outputPath);
 		}
-		static string FileName() {
-			DateTime time = DateTime.Now;
-			string re = time.ToString("yyyyMMdd_HHmmss");
-			return re;
-		}
+		//static string FileName() {
+		//	DateTime time = DateTime.Now;
+		//	string re = time.ToString("yyyyMMdd_HHmmss");
+		//	return re;
+		//}
 	}
 }

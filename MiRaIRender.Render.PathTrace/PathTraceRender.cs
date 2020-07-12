@@ -34,59 +34,6 @@ namespace MiRaIRender.Render.PathTrace {
 		int nextBlockId = 0;
 		object renderBlocksLock = new object(), imgLock = new object();
 
-		public void RenderABlock() {
-			int height = Options.Height,
-				width = Options.Width,
-				subSampleNumberPerPixel = Options.SubSampleNumberPerPixel,
-				traceDeep = Options.TraceDeep;
-			Float xmin = Math.Tan(Tools.GetRadianByAngle(Options.FovHorizon / 2));
-			Float pixelLength = (xmin * 2) / width;
-			Float ymax = xmin / width * height;
-			xmin = -xmin;
-
-			Color[,] imgTmp = new Color[32, 32];
-
-			while (RenderBlocks != null) {
-				int blockId;
-				lock (renderBlocksLock) {
-					blockId = nextBlockId;
-					nextBlockId++;
-				}
-				if (blockId >= RenderBlocks.Length) {
-					break;
-				}
-				RenderBlock renderBlock = RenderBlocks[blockId];
-				Console.WriteLine($"rending block {blockId} : {renderBlock.l}, {renderBlock.t} => {renderBlock.r}, {renderBlock.b}");
-				for (int j = renderBlock.t; j < renderBlock.b; j++) {
-					Float y = ymax - j * pixelLength;
-					for (int i = renderBlock.l; i < renderBlock.r; i++) {
-						Float x = xmin + i * pixelLength;
-
-						Color color = new Color();
-						Random random = new Random(Options.RandonSeed + j * width + i);
-						for (int k = 0; k < subSampleNumberPerPixel; k++) {
-							Float xt = (Float)random.NextDouble() * pixelLength;
-							Float yt = (Float)random.NextDouble() * pixelLength;
-
-							Vector3f dir = Vector3f.Normalize(new Vector3f(x + xt, y + yt, -1.0f));
-							Ray r = new Ray(Options.CameraOrigin, dir);
-							Color c = PathTrace(r, traceDeep, random);
-							color += c;
-						}
-						color /= subSampleNumberPerPixel;
-						imgTmp[j - renderBlock.t, i - renderBlock.l] = color;
-					}
-				}
-
-				//lock (imgLock) {
-				for (int j = renderBlock.t; j < renderBlock.b; j++) {
-					for (int i = renderBlock.l; i < renderBlock.r; i++) {
-						img[j, i] = imgTmp[j - renderBlock.t, i - renderBlock.l];
-					}
-				}
-				//}
-			}
-		}
 
 		public Color[,] RenderImg() {
 			scene.PreRender();
@@ -130,6 +77,62 @@ namespace MiRaIRender.Render.PathTrace {
 
 			return img;
 		}
+
+		private void RenderABlock() {
+			int height = Options.Height,
+				width = Options.Width,
+				subSampleNumberPerPixel = Options.SubSampleNumberPerPixel,
+				traceDeep = Options.TraceDeep;
+			Float xmin = Math.Tan(Tools.GetRadianByAngle(Options.FovHorizon / 2));
+			Float pixelLength = (xmin * 2) / width;
+			Float ymax = xmin / width * height;
+			xmin = -xmin;
+
+			Color[,] imgTmp = new Color[1, 32];
+
+			while (RenderBlocks != null) {
+				int blockId;
+				lock (renderBlocksLock) {
+					blockId = nextBlockId;
+					nextBlockId++;
+				}
+				if (blockId >= RenderBlocks.Length) {
+					break;
+				}
+				RenderBlock renderBlock = RenderBlocks[blockId];
+				Console.WriteLine($"rending block {blockId} : {renderBlock.l}, {renderBlock.t} => {renderBlock.r}, {renderBlock.b}");
+				for (int j = renderBlock.t; j < renderBlock.b; j++) {
+					Float y = ymax - j * pixelLength;
+					for (int i = renderBlock.l; i < renderBlock.r; i++) {
+						Float x = xmin + i * pixelLength;
+
+						Color color = new Color();
+						Random random = new Random(Options.RandonSeed + j * width + i);
+						for (int k = 0; k < subSampleNumberPerPixel; k++) {
+							Float xt = (Float)random.NextDouble() * pixelLength;
+							Float yt = (Float)random.NextDouble() * pixelLength;
+
+							Vector3f dir = Vector3f.Normalize(new Vector3f(x + xt, y + yt, -1.0f));
+							Ray r = new Ray(Options.CameraOrigin, dir);
+							Color c = PathTrace(r, traceDeep, random);
+							color += c;
+						}
+						color /= subSampleNumberPerPixel;
+						imgTmp[0, i - renderBlock.l] = color;
+					}
+					int imgbegin = width * j + renderBlock.l;
+					Array.Copy(imgTmp, 0, img, imgbegin, renderBlock.r - renderBlock.l);
+				}
+
+				//lock (imgLock) {
+				//for (int j = renderBlock.t; j < renderBlock.b; j++) {
+				//	int imgbegin = width * j + renderBlock.l;
+				//	Array.Copy(imgTmp, (j - renderBlock.t) * 32, img, imgbegin, renderBlock.r - renderBlock.l);
+				//}
+				//}
+			}
+		}
+
 
 		private Color PathTrace(Ray ray, int deepLast, Random random) {
 			if (deepLast < 0) return Color.Dark;
