@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Float = System.Single;
+using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
 
 namespace ModelLoader {
 	public class OBJLoaderWNormalSmooth {
@@ -11,7 +13,6 @@ namespace ModelLoader {
 			public int v0, v1, v2;
 			public int vt0, vt1, vt2;
 			public Vector3f Normal;
-
 		}
 
 		public static char[] LineSplitChars = new char[] { ' ' };
@@ -83,7 +84,7 @@ namespace ModelLoader {
 						if (!Float.TryParse(parts[3], out p2)) {
 							throw new Exception($"line {linecount} : 不能转换的数据 {parts[3]}");
 						}
-						vn.Add(new Vector3f(p0, p1, p2).Normalize());
+						vn.Add(Vector3f.Normalize(new Vector3f(p0, p1, p2)));
 						#endregion
 						break;
 					case "vp":
@@ -140,22 +141,22 @@ namespace ModelLoader {
 
 							{ //normal
 								Vector3f e1 = v[face.v1] - v[face.v0], e2 = v[face.v2] - v[face.v0];
-								face.Normal = (e1 ^ e2).Normalize();
+								face.Normal = Vector3f.Normalize(Vector3f.Cross(e1, e2));
 							}
 							{ //sp
-								//if (vtidx[0] != -1) {
-									face.vt0 = vtidx[0];
+							  //if (vtidx[0] != -1) {
+								face.vt0 = vtidx[0];
 								//}
 								//if (vtidx[i - 1] != -1) {
-									face.vt1 = vtidx[i - 1];
+								face.vt1 = vtidx[i - 1];
 								//}
 								//if (vtidx[i] != -1) {
-									face.vt2 = vtidx[i];
+								face.vt2 = vtidx[i];
 								//}
 							}
 
 							trigles.Add(face);
-							if(!faceList.ContainsKey(face.v0)) {
+							if (!faceList.ContainsKey(face.v0)) {
 								faceList[face.v0] = new List<PW_Trigle>();
 							}
 							faceList[face.v0].Add(face);
@@ -197,14 +198,14 @@ namespace ModelLoader {
 				foreach (PW_Trigle trigle in kv.Value) {
 					n += trigle.Normal;
 				}
-				n = n.Normalize();
+				n = Vector3f.Normalize(n);
 				pointNormal[kv.Key] = n;
 			}
 
 			int idx = 0;
 			foreach (PW_Trigle trigle in faces) {
 				TrigleFace t = new TrigleFace(v[trigle.v0], v[trigle.v1], v[trigle.v2]);
-					t.sp0 = vt[trigle.vt0];
+				t.sp0 = vt[trigle.vt0];
 				t.sp1 = vt[trigle.vt1];
 				t.sp2 = vt[trigle.vt2];
 				t.n0 = pointNormal[trigle.v0];

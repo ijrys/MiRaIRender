@@ -1,5 +1,7 @@
 ﻿using MiRaIRender.BaseType.SceneObject;
 using System;
+using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
 
 namespace MiRaIRender.BaseType {
 	/// <summary>

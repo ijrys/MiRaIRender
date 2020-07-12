@@ -1,6 +1,8 @@
 ﻿using MiRaIRender.BaseType.Materials;
 using MiRaIRender.BaseType.SceneObject;
 using Float = System.Single;
+using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
 
 namespace MiRaIRender.BaseType {
 	/// <summary>
@@ -53,7 +55,7 @@ namespace MiRaIRender.BaseType {
 		/// <param name="res1"></param>
 		/// <param name="res2"></param>
 		/// <returns></returns>
-		public static RayCastResult BetterOne (RayCastResult res1, RayCastResult res2) {
+		public static RayCastResult BetterOne(RayCastResult res1, RayCastResult res2) {
 			if (res1 == null || !res1.happened) {
 				return res2;
 			}

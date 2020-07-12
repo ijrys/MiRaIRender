@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
 
 namespace ModelLoader {
 	public static class MiRaIRanderProjectLoader {
@@ -38,9 +40,9 @@ namespace ModelLoader {
 						vt2 = ReadAVector(reader);
 						vn2 = ReadAVector(reader);
 						TrigleFace face = new TrigleFace(v0, v1, v2) {
-							sp0 = new Vector2f(vt0.x, vt0.y),
-							sp1 = new Vector2f(vt1.x, vt1.y),
-							sp2 = new Vector2f(vt2.x, vt2.y),
+							sp0 = new Vector2f(vt0.X, vt0.Y),
+							sp1 = new Vector2f(vt1.X, vt1.Y),
+							sp2 = new Vector2f(vt2.X, vt2.Y),
 							n0 = vn0,
 							n1 = vn1,
 							n2 = vn2
@@ -212,7 +214,7 @@ namespace ModelLoader {
 						break;
 						default:
 							throw new Exception("未知的实体类型" + cmds[0]);
-							break;
+							//break;
 					}
 
 					string mtlPath = Path.Combine(basePath, cmds[2] + ".mrimtl");

@@ -1,4 +1,6 @@
 ﻿using Math = System.MathF;
+using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
 
 namespace MiRaIRender.BaseType {
 	/// <summary>
@@ -14,8 +16,8 @@ namespace MiRaIRender.BaseType {
 			pMax = p + Margin;
 		}
 		public Bounds3(Vector3f p1, Vector3f p2) {
-			pMin = new Vector3f(Math.Min(p1.x, p2.x), Math.Min(p1.y, p2.y), Math.Min(p1.z, p2.z)) - Margin;
-			pMax = new Vector3f(Math.Max(p1.x, p2.x), Math.Max(p1.y, p2.y), Math.Max(p1.z, p2.z)) + Margin;
+			pMin = new Vector3f(Math.Min(p1.X, p2.X), Math.Min(p1.Y, p2.Y), Math.Min(p1.Z, p2.Z)) - Margin;
+			pMax = new Vector3f(Math.Max(p1.X, p2.X), Math.Max(p1.Y, p2.Y), Math.Max(p1.Z, p2.Z)) + Margin;
 		}
 
 		/// <summary>
@@ -25,12 +27,12 @@ namespace MiRaIRender.BaseType {
 		/// <returns></returns>
 		public Vector3f Offset(Vector3f p) {
 			Vector3f o = p - pMin;
-			if (pMax.x > pMin.x)
-				o.x /= pMax.x - pMin.x;
-			if (pMax.y > pMin.y)
-				o.y /= pMax.y - pMin.y;
-			if (pMax.z > pMin.z)
-				o.z /= pMax.z - pMin.z;
+			if (pMax.X > pMin.X)
+				o.X /= pMax.X - pMin.X;
+			if (pMax.Y > pMin.Y)
+				o.Y /= pMax.Y - pMin.Y;
+			if (pMax.Z > pMin.Z)
+				o.Z /= pMax.Z - pMin.Z;
 			return o;
 		}
 
@@ -43,8 +45,8 @@ namespace MiRaIRender.BaseType {
 			Vector3f tmins = (pMin - ray.Origin) * ray.Direction_Inv;
 			Vector3f tmaxs = (pMax - ray.Origin) * ray.Direction_Inv;
 
-			float tmin = Vector3f.Min(tmins, tmaxs).MaxValue();
-			float tmax = Vector3f.Max(tmins, tmaxs).MinValue();
+			float tmin = Tools.MaxElement(Vector3f.Min(tmins, tmaxs));
+			float tmax = Tools.MinElement(Vector3f.Max(tmins, tmaxs));
 
 			return (tmin < tmax);
 		}
@@ -58,8 +60,8 @@ namespace MiRaIRender.BaseType {
 		/// <returns></returns>
 		public static Bounds3 Intersect(Bounds3 a, Bounds3 b) {
 			return new Bounds3(
-				new Vector3f(Math.Max(a.pMin.x, b.pMin.x), Math.Max(a.pMin.y, b.pMin.y), Math.Max(a.pMin.z, b.pMin.z)),
-				new Vector3f(Math.Min(a.pMax.x, b.pMax.x), Math.Min(a.pMax.y, b.pMax.y), Math.Min(a.pMax.z, b.pMax.z))
+				new Vector3f(Math.Max(a.pMin.X, b.pMin.X), Math.Max(a.pMin.Y, b.pMin.Y), Math.Max(a.pMin.Z, b.pMin.Z)),
+				new Vector3f(Math.Min(a.pMax.X, b.pMax.X), Math.Min(a.pMax.Y, b.pMax.Y), Math.Min(a.pMax.Z, b.pMax.Z))
 			);
 		}
 		/// <summary>

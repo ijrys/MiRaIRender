@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
 
 namespace ModelLoader {
 	public static class MiRaIRanderProjectSaver {
@@ -15,7 +17,8 @@ namespace ModelLoader {
 		private static string MaterialMapDescription(IMaterialMapAble materialMap) {
 			if (materialMap.GetType() == typeof(PureColorMaterialMap)) {
 				return "color " + ColorDescription((materialMap as PureColorMaterialMap).BaseColor);
-			} else if (materialMap.GetType() == typeof(PureGrayMaterialMap)) {
+			}
+			else if (materialMap.GetType() == typeof(PureGrayMaterialMap)) {
 				Color c = new Color((materialMap as PureGrayMaterialMap).BaseGray);
 				return "color " + ColorDescription(c);
 			}
@@ -56,13 +59,13 @@ namespace ModelLoader {
 		}
 
 		private static void WriteVector(BinaryWriter bw, Vector3f vector) {
-			bw.Write(vector.x);
-			bw.Write(vector.y);
-			bw.Write(vector.z);
+			bw.Write(vector.X);
+			bw.Write(vector.Y);
+			bw.Write(vector.Z);
 		}
 		private static void WriteVector(BinaryWriter bw, Vector2f vector) {
-			bw.Write(vector.x);
-			bw.Write(vector.y);
+			bw.Write(vector.X);
+			bw.Write(vector.Y);
 			bw.Write(0.0f);
 		}
 
@@ -109,7 +112,7 @@ namespace ModelLoader {
 						}
 						if (type == typeof(PointLight)) {
 							PointLight pl = obj as PointLight;
-							sw.WriteLine($"l.p {pl.Position.x},{pl.Position.y},{pl.Position.z},{pl.R} {objcount}");
+							sw.WriteLine($"l.p {pl.Position.X},{pl.Position.Y},{pl.Position.Z},{pl.R} {objcount}");
 							continue;
 						}
 					}

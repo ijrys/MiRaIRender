@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
 
 namespace MiRaIRender.Render.PathTrace {
 	public class PathTraceRenderOptions : RenderOptions {
@@ -99,7 +101,7 @@ namespace MiRaIRender.Render.PathTrace {
 			re[3] = "randonseed=" + option.RandonSeed;
 			re[4] = "tracedeep=" + option.TraceDeep;
 			re[5] = "ssnpp=" + option.SubSampleNumberPerPixel;
-			re[6] = "cameraorigin=" + option.CameraOrigin.x + ',' + option.CameraOrigin.y + ',' + option.CameraOrigin.z;
+			re[6] = "cameraorigin=" + option.CameraOrigin.X + ',' + option.CameraOrigin.Y + ',' + option.CameraOrigin.Z;
 			return re;
 		}
 	}

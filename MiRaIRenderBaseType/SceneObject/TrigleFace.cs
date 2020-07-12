@@ -3,6 +3,8 @@ using MiRaIRender.BaseType.SceneObject;
 using System;
 using Float = System.Single;
 using Math = System.MathF;
+using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
 
 namespace MiRaIRender.BaseType {
 	public class TrigleFace : RenderObject {
@@ -38,21 +40,21 @@ namespace MiRaIRender.BaseType {
 		public override RayCastResult Intersection(Ray ray) {
 			if (ray.OriginObject == this) { return null; }
 			Float u, v, t_tmp = 0;
-			Vector3f pvec = ray.Direction ^ e2; // S1
-			Float det = e1 & pvec;
+			Vector3f pvec = Vector3f.Cross(ray.Direction, e2); // S1
+			Float det = Vector3f.Dot(e1, pvec);
 
 			Float det_inv = 1.0f / det;
 			Vector3f tvec = ray.Origin - v0; // S
-			u = (tvec & pvec) * det_inv;
+			u = Vector3f.Dot(tvec, pvec) * det_inv;
 			if (u < 0 || u > 1) {
 				return null;
 			}
-			Vector3f qvec = (tvec ^ e1); // S2
-			v = (ray.Direction & qvec) * det_inv;
+			Vector3f qvec = Vector3f.Cross(tvec, e1); // S2
+			v = Vector3f.Dot(ray.Direction, qvec) * det_inv;
 			if (v < 0 || u + v > 1) {
 				return null;
 			}
-			t_tmp = (e2 & qvec) * det_inv;
+			t_tmp = Vector3f.Dot(e2, qvec) * det_inv;
 			if (t_tmp < 0) {
 				return null;
 			}
@@ -64,8 +66,8 @@ namespace MiRaIRender.BaseType {
 			//result.material = material;
 			result.coords = ray.Origin + t_tmp * ray.Direction;
 			result.uv = new Vector2f(u, v);
-			result.normal = Vector3f.UVMerge(u, v, n0, n1, n2);
-			result.internalPoint = ((result.normal & ray.Direction) < 0);
+			result.normal = Tools.UVMerge(u, v, n0, n1, n2);
+			result.internalPoint = (Vector3f.Dot(result.normal, ray.Direction) < 0);
 			return result;
 
 			//RayCastResult result = null;
@@ -105,11 +107,11 @@ namespace MiRaIRender.BaseType {
 			double u = random.NextDouble();
 			double v = random.NextDouble();
 			v *= (1.0 - u);
-			return Vector3f.UVMerge((Float)u, (Float)v, v0, v1, v2);
+			return Tools.UVMerge((Float)u, (Float)v, v0, v1, v2);
 		}
 
 		public override Vector2f UV2XY(Vector2f uv) {
-			return (1.0f - uv.x - uv.y) * sp0 + uv.x * sp1 + uv.y * sp2;
+			return (1.0f - uv.X - uv.Y) * sp0 + uv.X * sp1 + uv.Y * sp2;
 		}
 	}
 }

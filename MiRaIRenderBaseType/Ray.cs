@@ -1,4 +1,6 @@
 ﻿using MiRaIRender.BaseType.SceneObject;
+using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
 
 namespace MiRaIRender.BaseType {
 	/// <summary>
@@ -28,14 +30,14 @@ namespace MiRaIRender.BaseType {
 		public Ray(Vector3f o, Vector3f d) {
 			Origin = o;
 			Direction = d;
-			Direction_Inv = new Vector3f(1.0f / d.x, 1.0f / d.y, 1.0f / d.z);
+			Direction_Inv = Vector3f.One / Direction; // new Vector3f(1.0f / d.x, 1.0f / d.y, 1.0f / d.z);
 			OriginObject = null;
 		}
 
 		public Ray(Vector3f o, Vector3f d, RenderObject originObject) {
 			Origin = o;
 			Direction = d;
-			Direction_Inv = new Vector3f(1.0f / d.x, 1.0f / d.y, 1.0f / d.z);
+			Direction_Inv = Vector3f.One / d; //new Vector3f(1.0f / d.x, 1.0f / d.y, 1.0f / d.z);
 			OriginObject = originObject;
 		}
 	}

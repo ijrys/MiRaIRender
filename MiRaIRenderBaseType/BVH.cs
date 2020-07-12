@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 
 using System.Text;
+using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
 
 namespace MiRaIRender.BaseType {
 	public class BVH : IRayCastAble {
@@ -46,14 +48,14 @@ namespace MiRaIRender.BaseType {
 				while (f < t) {
 					// 前找大
 					while (f < t) {
-						if (objs[f].CenterPoint.x > objs[s].CenterPoint.x) {
+						if (objs[f].CenterPoint.X > objs[s].CenterPoint.X) {
 							break;
 						}
 						f++;
 					}
 					// 后找小
 					while (f < t) {
-						if (objs[t].CenterPoint.x < objs[s].CenterPoint.x) {
+						if (objs[t].CenterPoint.X < objs[s].CenterPoint.X) {
 							break;
 						}
 						t--;
@@ -65,7 +67,7 @@ namespace MiRaIRender.BaseType {
 						objs[t] = tmp;
 					}
 				}
-				if (objs[f].CenterPoint.x > objs[s].CenterPoint.x) {
+				if (objs[f].CenterPoint.X > objs[s].CenterPoint.X) {
 					f--;
 				}
 				if (f != s) {
@@ -95,14 +97,14 @@ namespace MiRaIRender.BaseType {
 				while (f < t) {
 					// 前找大
 					while (f < t) {
-						if (objs[f].CenterPoint.y > objs[s].CenterPoint.y) {
+						if (objs[f].CenterPoint.Y > objs[s].CenterPoint.Y) {
 							break;
 						}
 						f++;
 					}
 					// 后找小
 					while (f < t) {
-						if (objs[t].CenterPoint.y < objs[s].CenterPoint.y) {
+						if (objs[t].CenterPoint.Y < objs[s].CenterPoint.Y) {
 							break;
 						}
 						t--;
@@ -114,7 +116,7 @@ namespace MiRaIRender.BaseType {
 						objs[t] = tmp;
 					}
 				}
-				if (objs[f].CenterPoint.y > objs[s].CenterPoint.y) {
+				if (objs[f].CenterPoint.Y > objs[s].CenterPoint.Y) {
 					f--;
 				}
 				if (f != s) {
@@ -144,14 +146,14 @@ namespace MiRaIRender.BaseType {
 				while (f < t) {
 					// 前找大
 					while (f < t) {
-						if (objs[f].CenterPoint.z > objs[s].CenterPoint.z) {
+						if (objs[f].CenterPoint.Z > objs[s].CenterPoint.Z) {
 							break;
 						}
 						f++;
 					}
 					// 后找小
 					while (f < t) {
-						if (objs[t].CenterPoint.z < objs[s].CenterPoint.z) {
+						if (objs[t].CenterPoint.Z < objs[s].CenterPoint.Z) {
 							break;
 						}
 						t--;
@@ -163,7 +165,7 @@ namespace MiRaIRender.BaseType {
 						objs[t] = tmp;
 					}
 				}
-				if (objs[f].CenterPoint.z > objs[s].CenterPoint.z) {
+				if (objs[f].CenterPoint.Z > objs[s].CenterPoint.Z) {
 					f--;
 				}
 				if (f != s) {
@@ -200,8 +202,8 @@ namespace MiRaIRender.BaseType {
 			int divideWay = 0;
 			{
 				Vector3f v = boundbox.pMax - boundbox.pMin;
-				if (v.x < v.y) {
-					if (v.y < v.z) {
+				if (v.X < v.Y) {
+					if (v.Y < v.Z) {
 						divideWay = 2;
 					}
 					else {
@@ -209,7 +211,7 @@ namespace MiRaIRender.BaseType {
 					}
 				}
 				else {
-					if (v.x < v.z) {
+					if (v.X < v.Z) {
 						divideWay = 2;
 					}
 					else {

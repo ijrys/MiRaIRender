@@ -1,4 +1,7 @@
-﻿/// <summary>
+﻿using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
+
+/// <summary>
 /// 材质相关类型
 /// </summary>
 namespace MiRaIRender.BaseType.Materials {

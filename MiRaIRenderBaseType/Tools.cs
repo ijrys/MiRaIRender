@@ -1,7 +1,8 @@
 ﻿using System;
 using Math = System.MathF;
-
 using Float = System.Single;
+using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
 
 namespace MiRaIRender.BaseType {
 	public static class Tools {
@@ -25,7 +26,8 @@ namespace MiRaIRender.BaseType {
 		/// <param name="n"></param>
 		/// <returns></returns>
 		public static Vector3f Reflect(Vector3f dir, Vector3f n) {
-			return dir - Vector3f.Dot(dir, n) * 2.0f * n;
+			//return dir - Vector3f.Dot(dir, n) * 2.0f * n;
+			return Vector3f.Reflect(dir, n);
 		}
 
 		/// <summary>
@@ -70,7 +72,7 @@ namespace MiRaIRender.BaseType {
 			Float cosBeta = Math.Sqrt(1.0f - sinBetaSq);
 			Float p1, p2, n = 1.0f / niOverNt;
 			p1 = (cosAlpha - n * cosBeta) / (cosAlpha + n * cosBeta);
-			p2 = (cosBeta - n *cosAlpha ) / (cosBeta + n *cosAlpha );
+			p2 = (cosBeta - n * cosAlpha) / (cosBeta + n * cosAlpha);
 			return (p1 * p1 + p2 * p2) * 0.5f;
 		}
 
@@ -94,22 +96,22 @@ namespace MiRaIRender.BaseType {
 			//}
 
 			dir = -dir;
-			Float cosAlpha = dir & normal;
+			Float cosAlpha = Vector3f.Dot(dir, normal);
 			Float sinAlphaSq = 1.0f - cosAlpha * cosAlpha;
 			Float sinBetaSq = niOverNt * niOverNt * sinAlphaSq;
 			if (sinBetaSq > 1.0f) { // 全反射
 				return (true, Reflect(dir, normal));
 			}
 			else { // 折射
-				//Float cosBetaSq = 1.0f - sinBetaSq;
-				//Float cosBeta = Math.Sqrt(cosBetaSq);
-				//Vector3f re = ((normal * cosAlpha) - dir) * niOverNt - normal * cosBeta;
+				   //Float cosBetaSq = 1.0f - sinBetaSq;
+				   //Float cosBeta = Math.Sqrt(cosBetaSq);
+				   //Vector3f re = ((normal * cosAlpha) - dir) * niOverNt - normal * cosBeta;
 				return (false, new Vector3f());
 			}
 
 		}
 
-		public static Float Clamp (Float min, Float max, Float value) {
+		public static Float Clamp(Float min, Float max, Float value) {
 			if (value < min) { return min; }
 			if (value > max) { return max; }
 			return value;
@@ -118,6 +120,17 @@ namespace MiRaIRender.BaseType {
 			if (value < min) { return min; }
 			if (value > max) { return max; }
 			return value;
+		}
+
+		public static Vector3f UVMerge(Float u, Float v, Vector3f n0, Vector3f n1, Vector3f n2) {
+			return (1 - u - v) * n0 + u * n1 + v * n2;
+		}
+
+		public static Float MinElement(Vector3f v) {
+			return Math.Min(Math.Min(v.X, v.Y), v.Z);
+		}
+		public static Float MaxElement(Vector3f v) {
+			return Math.Max(Math.Max(v.X, v.Y), v.Z);
 		}
 	}
 }

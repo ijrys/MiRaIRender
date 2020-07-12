@@ -1,4 +1,7 @@
-﻿/// <summary>
+﻿using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
+
+/// <summary>
 /// 材质相关类型
 /// </summary>
 namespace MiRaIRender.BaseType.Materials {
@@ -17,7 +20,7 @@ namespace MiRaIRender.BaseType.Materials {
 				return Vector3f.Zero;
 			}
 			Color color = NormalMap.Color(xy);
-			return new Vector3f(color.R - 0.5f, color.B - 0.5f, color.G - 0.5f).Normalize();
+			return Vector3f.Normalize(new Vector3f(color.R - 0.5f, color.B - 0.5f, color.G - 0.5f));
 		}
 	}
 }

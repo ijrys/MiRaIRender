@@ -5,10 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using Math = System.MathF;
 using Float = System.Single;
+using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
 
 namespace MiRaIRender.BaseType.LightSource {
 	public class PointLight : SceneObject.SceneObjectA {
-		
+
 		/// <summary>
 		/// 光源位置
 		/// </summary>
@@ -26,7 +28,7 @@ namespace MiRaIRender.BaseType.LightSource {
 			Vector3f A = ray.Origin, B = ray.Direction, C = Position;
 			Float a = Vector3f.Dot(B, B);
 			Float b = Vector3f.Dot(B, (A - C)) * 2.0f;
-			Float c = (A - C).LengthSquare() - R * R;
+			Float c = (A - C).LengthSquared() - R * R;
 
 			float drt = b * b - 4 * a * c;
 			if (drt < 0) {
@@ -55,8 +57,8 @@ namespace MiRaIRender.BaseType.LightSource {
 			result.obj = this;
 			result.material = Material;
 			result.coords = ray.Origin + ray.Direction * d;
-			result.distance =   d;
-			result.normal = (result.coords - Position).Normalize();
+			result.distance = d;
+			result.normal = Vector3f.Normalize(result.coords - Position);
 
 			return result;
 		}

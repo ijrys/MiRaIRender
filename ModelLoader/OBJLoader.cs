@@ -4,6 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Float = System.Single;
+using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
+
 namespace ModelLoader {
 	public class OBJLoader {
 		public static char[] LineSplitChars = new char[] { ' ' };
@@ -74,7 +77,7 @@ namespace ModelLoader {
 						if (!Float.TryParse(parts[3], out p2)) {
 							throw new Exception($"line {linecount} : 不能转换的数据 {parts[3]}");
 						}
-						vn.Add(new Vector3f(p0, p1, p2).Normalize());
+						vn.Add(Vector3f.Normalize(new Vector3f(p0, p1, p2)));
 						#endregion
 						break;
 					case "vp":
@@ -128,7 +131,7 @@ namespace ModelLoader {
 							{ //normal
 								Vector3f facenormal = new Vector3f();
 								if (vnidx[0] == -1 || vnidx[i - 1] == -1 || vnidx[i] == -1) {
-									facenormal = (face.e1 ^ face.e2).Normalize();
+									facenormal = Vector3f.Normalize(Vector3f.Cross(face.e1, face.e2));
 								}
 
 								if (vnidx[0] == -1) {
