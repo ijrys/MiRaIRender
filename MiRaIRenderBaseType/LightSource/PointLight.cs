@@ -24,7 +24,13 @@ namespace MiRaIRender.BaseType.LightSource {
 			Material.Light.Intensity = new Color(10.0f);
 		}
 
-		public override RayCastResult Intersection(Ray ray) {
+		public override RayCastResult Intersection(Ray ray, float nowbest) {
+			{
+				float distance = (Position - ray.Origin).Length();
+				if (nowbest + R < distance) {
+					return null;
+				}
+			}
 			Vector3f A = ray.Origin, B = ray.Direction, C = Position;
 			Float a = Vector3f.Dot(B, B);
 			Float b = Vector3f.Dot(B, (A - C)) * 2.0f;
@@ -53,7 +59,7 @@ namespace MiRaIRender.BaseType.LightSource {
 			}
 
 			RayCastResult result = new RayCastResult();
-			result.happened = true;
+			//result.happened = true;
 			result.obj = this;
 			result.material = Material;
 			result.coords = ray.Origin + ray.Direction * d;

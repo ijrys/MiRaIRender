@@ -14,7 +14,7 @@ namespace MiRaIRender.BaseType.SceneObject {
 			protected set;
 		}
 
-		public abstract RayCastResult Intersection(Ray ray);
+		public abstract RayCastResult Intersection(Ray ray, float nowbest);
 
 		public abstract Vector2f UV2XY(Vector2f uv);
 

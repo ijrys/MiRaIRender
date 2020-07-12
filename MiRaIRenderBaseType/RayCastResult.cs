@@ -12,7 +12,7 @@ namespace MiRaIRender.BaseType {
 		/// <summary>
 		/// 追踪发生【弃用】
 		/// </summary>
-		public bool happened = false;
+		//public bool happened = false;
 
 		/// <summary>
 		/// 相交点是否在物体内部
@@ -56,10 +56,10 @@ namespace MiRaIRender.BaseType {
 		/// <param name="res2"></param>
 		/// <returns></returns>
 		public static RayCastResult BetterOne(RayCastResult res1, RayCastResult res2) {
-			if (res1 == null || !res1.happened) {
+			if (res1 == null) {
 				return res2;
 			}
-			if (res2 == null || !res2.happened) {
+			if (res2 == null) {
 				return res1;
 			}
 			if (res1.distance < res2.distance) {

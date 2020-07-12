@@ -17,7 +17,7 @@ namespace MiRaIRender.BaseType {
 		public RayCastResult Intersection(Ray ray) {
 			RayCastResult result = null;
 			foreach (SceneObjectA o in r_Objects) {
-				RayCastResult re = o.Intersection(ray);
+				RayCastResult re = o.Intersection(ray, float.MaxValue);
 				result = RayCastResult.BetterOne(result, re);
 			}
 			return result;

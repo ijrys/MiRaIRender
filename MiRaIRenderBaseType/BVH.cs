@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Vector3f = System.Numerics.Vector3;
 using Vector2f = System.Numerics.Vector2;
+using Math = System.MathF;
 
 namespace MiRaIRender.BaseType {
 	public class BVH : IRayCastAble {
@@ -13,24 +14,20 @@ namespace MiRaIRender.BaseType {
 		public Bounds3 BoundBox { get; set; }
 
 
-		public RayCastResult Intersection(Ray ray) {
-			if (!BoundBox.Intersection(ray)) { // 未相交
+		public RayCastResult Intersection(Ray ray, float nowbest) {
+			(bool cast, float mint) = BoundBox.Intersection(ray);
+			if (!cast || mint > nowbest) { // 未相交 或 当前最小解已不是最优
 				return null;
 			}
-			//RayCastResult lres = null;
-			//RayCastResult rres = null;
-			//if (Left != null) {
-			//	lres = Left.Intersection(ray);
-			//}
-			//if (Right != null) {
-			//	rres = Right.Intersection(ray);
-			//}
 			RayCastResult result = null; // RayCastResult.BetterOne(lres, rres);
 
 			if (Childs != null) {
 				foreach (IRayCastAble obj in Childs) {
-					RayCastResult restmp = obj.Intersection(ray);
+					RayCastResult restmp = obj.Intersection(ray, nowbest);
 					result = RayCastResult.BetterOne(result, restmp);
+					if (result != null) {
+						nowbest = Math.Min(nowbest, result.distance);
+					}
 				}
 			}
 

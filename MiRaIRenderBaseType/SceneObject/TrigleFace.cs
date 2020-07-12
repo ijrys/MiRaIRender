@@ -37,8 +37,14 @@ namespace MiRaIRender.BaseType {
 			CenterPoint = (v0 + v1 + v2) / 3.0f;
 		}
 
-		public override RayCastResult Intersection(Ray ray) {
+		public override RayCastResult Intersection(Ray ray, float nowbest) {
 			if (ray.OriginObject == this) { return null; }
+			{
+				(bool happened, Float mint) = BoundBox.Intersection(ray);
+				if (!happened || mint > nowbest) { // 未相交 或 当前最小解已不是最优
+					return null;
+				}
+			}
 			Float u, v, t_tmp = 0;
 			Vector3f pvec = Vector3f.Cross(ray.Direction, e2); // S1
 			Float det = Vector3f.Dot(e1, pvec);
@@ -60,7 +66,7 @@ namespace MiRaIRender.BaseType {
 			}
 
 			RayCastResult result = new RayCastResult();
-			result.happened = true;
+			//result.happened = true;
 			result.distance = t_tmp;
 			result.obj = this;
 			//result.material = material;

@@ -41,14 +41,14 @@ namespace MiRaIRender.BaseType {
 		/// </summary>
 		/// <param name="ray"></param>
 		/// <returns></returns>
-		public bool Intersection(Ray ray) {
+		public (bool, float) Intersection(Ray ray) {
 			Vector3f tmins = (pMin - ray.Origin) * ray.Direction_Inv;
 			Vector3f tmaxs = (pMax - ray.Origin) * ray.Direction_Inv;
 
 			float tmin = Tools.MaxElement(Vector3f.Min(tmins, tmaxs));
 			float tmax = Tools.MinElement(Vector3f.Max(tmins, tmaxs));
 
-			return (tmin < tmax);
+			return (tmin < tmax, tmin);
 		}
 
 		#region Boolean Operaters

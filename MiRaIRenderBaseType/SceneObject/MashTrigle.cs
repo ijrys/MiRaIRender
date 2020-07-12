@@ -12,7 +12,7 @@ namespace MiRaIRender.BaseType {
 
 		private BVH BVH;
 
-		public void SetTrigles (TrigleFace[] trigles) {
+		public void SetTrigles(TrigleFace[] trigles) {
 			this.trigles = trigles;
 			if (trigles != null && trigles.Length > 0) {
 				Bounds3 bounds = trigles[0].BoundBox;
@@ -21,7 +21,8 @@ namespace MiRaIRender.BaseType {
 					//item.material = _material;
 				}
 				this._boundBox = bounds;
-			} else {
+			}
+			else {
 				this._boundBox = new Bounds3();
 			}
 
@@ -34,13 +35,16 @@ namespace MiRaIRender.BaseType {
 		/// </summary>
 		/// <param name="ray"></param>
 		/// <returns></returns>
-		public override RayCastResult Intersection(Ray ray) {
+		public override RayCastResult Intersection(Ray ray, float nowbest) {
 			// 包围盒测试失败
-			if (!_boundBox.Intersection(ray)) {
-				return null;
+			{
+				(bool happened, float mint) = _boundBox.Intersection(ray);
+				if (!happened || mint > nowbest) { // 未相交 或 当前最小解已不是最优
+					return null;
+				}
 			}
 
-			RayCastResult result = BVH.Intersection(ray);
+			RayCastResult result = BVH.Intersection(ray, float.MaxValue);
 			if (result != null) {
 				result.material = Material;
 			}

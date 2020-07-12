@@ -10,6 +10,7 @@ using System.Numerics;
 namespace MiRaIRender {
 	class Program {
 		static void Main(string[] args) {
+			Console.WriteLine("MiRaIRender 1.2.0.3");
 			string projectPath = null;
 			string configPath = null;
 			string outputPath = null;
