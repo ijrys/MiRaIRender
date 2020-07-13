@@ -2,7 +2,7 @@
   "profiles": {
     "MiRaIRender": {
       "commandName": "Project",
-      "commandLineArgs": "A:\\scenes\\testS\\testS.mrirpro A:\\scenes\\debug.rconf A:\\img\\test1.ppm"
+      "commandLineArgs": "A:\\scenes\\testTS\\testTS.mrirpro A:\\scenes\\debug.rconf A:\\img\\test1"
     }
   }
 }

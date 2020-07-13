@@ -15,6 +15,9 @@ namespace MiRaIRender.BaseType.Materials {
 			get => _enable;
 			set => _enable = value;
 		}
+		/// <summary>
+		/// 透射率
+		/// </summary>
 		public Float Refraction {
 			get => _refraction;
 			set {
@@ -29,18 +32,17 @@ namespace MiRaIRender.BaseType.Materials {
 			}
 		}
 
-		public bool EnableMap = false;
 		/// <summary>
-		/// 强度贴图
+		/// 透射率强度贴图
 		/// </summary>
-		public IMaterialGrayMapAble IntensityMap;
+		public IMaterialGrayMapAble IntensityMap = null;
 
 		public Float GetRefraction(Vector2f xy) {
 			if (!Enable) {
 				return 0.0f;
 			}
 			Float re = Refraction;
-			if (EnableMap && (IntensityMap != null)) {
+			if (IntensityMap != null) {
 				re *= IntensityMap.Lightness(xy);
 			}
 			return re;

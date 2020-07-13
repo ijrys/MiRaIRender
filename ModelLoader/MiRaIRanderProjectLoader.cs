@@ -150,7 +150,6 @@ namespace ModelLoader {
 					break;
 					case "refraction.intensitymap":
 						result.Refraction.IntensityMap = MaterialGrayMap(value);
-						result.Refraction.EnableMap = true;
 						break;
 					case "light":
 						result.Light.Intensity = Color(value);

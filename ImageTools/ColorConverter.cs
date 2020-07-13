@@ -55,6 +55,17 @@ namespace ImageTools {
 			}
 			return re;
 		}
+		public static ColorRGB8[,] ConvertToRGB8Image(Float[,] img) {
+			int imgh = img.GetLength(0), imgw = img.GetLength(1);
+			ColorRGB8[,] re = new ColorRGB8[imgh, imgw];
+			for (int j = 0; j < imgh; j++) {
+				for (int i = 0; i < imgw; i++) {
+					byte g = (byte)(Tools.Clamp(0.0f, 1.0f, img[j, i]) * 255);
+					re[j, i] = new ColorRGB8(g);
+				}
+			}
+			return re;
+		}
 
 		public static ColorRGB8[,] ConvertToRGB8Image(int[,] data, int maxvalue) {
 			int imgh = data.GetLength(0), imgw = data.GetLength(1);

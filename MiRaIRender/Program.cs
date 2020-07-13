@@ -1,4 +1,6 @@
-﻿using ImageTools;
+﻿#define ReflactDebug
+
+using ImageTools;
 using MiRaIRender.BaseType;
 using MiRaIRender.BaseType.LightSource;
 using MiRaIRender.BaseType.Materials;
@@ -10,7 +12,7 @@ using System.Numerics;
 namespace MiRaIRender {
 	class Program {
 		static void Main(string[] args) {
-			Console.WriteLine("MiRaIRender 1.2.0.4");
+			Console.WriteLine("MiRaIRender 1.3.0.0");
 			string projectPath = null;
 			string configPath = null;
 			string outputPath = null;
@@ -43,7 +45,7 @@ namespace MiRaIRender {
 			Console.WriteLine($"Project: {projectPath}");
 			Console.WriteLine($"Config : {configPath}");
 			Console.WriteLine($"Output : {outputPath}");
-			if (File.Exists(outputPath)) {
+			if (File.Exists(outputPath + ".ppm")) {
 				string uinp;
 				do {
 					Console.WriteLine("Output file already exist, overwrite it?(y/n)");
@@ -85,8 +87,13 @@ namespace MiRaIRender {
 			ColorRGB8[,] simg = ImageTools.ColorConverter.ConvertToRGB8Image(img);
 			//string fname = $"A:\\img\\{FileName()}";
 
-			Console.WriteLine("save to " + outputPath);
-			ImageSave.ImageSave_PPM(simg, outputPath);
+			Console.WriteLine("save to " + outputPath + ".ppm");
+			ImageSave.ImageSave_PPM(simg, outputPath + ".ppm");
+
+#if ReflactDebug
+			simg = ImageTools.ColorConverter.ConvertToRGB8Image(render.debugImg);
+			ImageSave.ImageSave_PPM(simg, outputPath + "_dbg.ppm");
+#endif
 		}
 		//static string FileName() {
 		//	DateTime time = DateTime.Now;

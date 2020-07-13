@@ -43,7 +43,7 @@ namespace ModelLoader {
 					}
 					if (material.Refraction != null && material.Refraction.Enable) {
 						sw.WriteLine("refraction=" + material.Refraction.Refraction + " " + material.Refraction.IOR);
-						if (material.Refraction.EnableMap && material.Refraction.IntensityMap != null) {
+						if (material.Refraction.IntensityMap != null) {
 							sw.WriteLine("refraction.intensitymap=" + MaterialMapDescription(material.Refraction.IntensityMap));
 						}
 					}

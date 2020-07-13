@@ -82,33 +82,16 @@ namespace MiRaIRender.BaseType {
 		/// <param name="dir"></param>
 		/// <param name="niOverNt">入射折射率/出射折射率</param>
 		/// <returns></returns>
-		public static (bool, Vector3f) Refract(Vector3f dir, Vector3f normal, float niOverNt) {
-			//dir = -dir;
-			//Float cosAlpha = dir & normal;
-			//Float discriminant = 1.0f - niOverNt * niOverNt * (1.0f - cosAlpha * cosAlpha);
-			//if (discriminant > 0) {
-			//	Float cosGamma = Math.Sqrt(discriminant);
-			//	Vector3f re = ((normal * cosAlpha) - dir) * niOverNt - normal * cosGamma;
-			//	return  re;
-			//}
-			//else {
-			//	return Reflect(dir, normal);
-			//}
-
+		public static Vector3f Refract(Vector3f dir, Vector3f normal, float niOverNt) {
 			dir = -dir;
 			Float cosAlpha = Vector3f.Dot(dir, normal);
 			Float sinAlphaSq = 1.0f - cosAlpha * cosAlpha;
 			Float sinBetaSq = niOverNt * niOverNt * sinAlphaSq;
-			if (sinBetaSq > 1.0f) { // 全反射
-				return (true, Reflect(dir, normal));
-			}
-			else { // 折射
-				   //Float cosBetaSq = 1.0f - sinBetaSq;
-				   //Float cosBeta = Math.Sqrt(cosBetaSq);
-				   //Vector3f re = ((normal * cosAlpha) - dir) * niOverNt - normal * cosBeta;
-				return (false, new Vector3f());
-			}
 
+			Float cosBetaSq = 1.0f - sinBetaSq;
+			Float cosBeta = Math.Sqrt(cosBetaSq);
+			Vector3f re = ((normal * cosAlpha) - dir) * niOverNt - normal * cosBeta;
+			return re;
 		}
 
 		public static Float Clamp(Float min, Float max, Float value) {

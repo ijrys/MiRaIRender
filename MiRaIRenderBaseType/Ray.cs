@@ -21,6 +21,7 @@ namespace MiRaIRender.BaseType {
 		public Vector3f Direction_Inv;
 
 		public RenderObject OriginObject;
+		public float IOR;
 
 		/// <summary>
 		/// 
@@ -32,13 +33,15 @@ namespace MiRaIRender.BaseType {
 			Direction = d;
 			Direction_Inv = Vector3f.One / Direction;
 			OriginObject = null;
+			IOR = 1.0f;
 		}
 
-		public Ray(Vector3f o, Vector3f d, RenderObject originObject) {
+		public Ray(Vector3f o, Vector3f d, RenderObject originObject, float ior) {
 			Origin = o;
 			Direction = d;
 			Direction_Inv = Vector3f.One / d;
 			OriginObject = originObject;
+			IOR = ior;
 		}
 	}
 }

@@ -50,6 +50,11 @@ namespace MiRaIRender.BaseType {
 		public Vector3f coords;
 
 		/// <summary>
+		/// 出射物体ior
+		/// </summary>
+		public Float IOR;
+
+		/// <summary>
 		/// 返回两个结果中更好的一个
 		/// </summary>
 		/// <param name="res1"></param>

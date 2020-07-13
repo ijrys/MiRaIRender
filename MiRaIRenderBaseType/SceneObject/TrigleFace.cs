@@ -66,14 +66,17 @@ namespace MiRaIRender.BaseType {
 			}
 
 			RayCastResult result = new RayCastResult();
-			//result.happened = true;
+			
 			result.distance = t_tmp;
 			result.obj = this;
 			//result.material = material;
 			result.coords = ray.Origin + t_tmp * ray.Direction;
 			result.uv = new Vector2f(u, v);
 			result.normal = Tools.UVMerge(u, v, n0, n1, n2);
-			result.internalPoint = (Vector3f.Dot(result.normal, ray.Direction) < 0);
+			result.internalPoint = (Vector3f.Dot(result.normal, ray.Direction) > 0);
+			if (result.internalPoint) {
+				result.normal = -result.normal;
+			}
 			return result;
 
 			//RayCastResult result = null;

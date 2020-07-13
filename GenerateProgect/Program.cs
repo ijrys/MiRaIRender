@@ -5,6 +5,8 @@ using MiRaIRender.Render.PathTrace;
 using ModelLoader;
 using System;
 using System.IO;
+using Vector3f = System.Numerics.Vector3;
+using Vector2f = System.Numerics.Vector2;
 
 namespace GenerateProgect {
 	class Program {
@@ -59,9 +61,7 @@ namespace GenerateProgect {
 			//objs = OBJLoader.LoadModel("A:\\m3_1.obj");
 			objs = OBJLoaderWNormalSmooth.LoadModel("A:\\m3_1.obj");
 			obj = objs[0];
-			obj.Material.Metallic.Metallic = 0.9f;
-			obj.Material.Roughness = 0.5f;
-			obj.Material.BaseColor = new PureColorMaterialMap(new Color(0.95f, 0.95f, 0.95f));
+			obj.Material.Roughness = 0.8f;
 			scene.Objects.Add(obj);
 
 			objs = OBJLoader.LoadModel("A:\\m3_2.obj");
@@ -69,6 +69,16 @@ namespace GenerateProgect {
 			obj.Material.Metallic.Metallic = 0.9f;
 			obj.Material.Roughness = 0.8f;
 			obj.Material.BaseColor = new PureColorMaterialMap(new Color(0.3f, 0.3f, 0.3f));
+			scene.Objects.Add(obj);
+
+			objs = OBJLoaderWNormalSmooth.LoadModel("A:\\m3_b1.obj");
+			obj = objs[0];
+			obj.Material.Metallic.Metallic = 0.0f;
+			obj.Material.Refraction.Enable = true;
+			obj.Material.Refraction.Refraction = 0.9f;
+			obj.Material.Refraction.IOR = 1.4f;
+			obj.Material.Roughness = 0.1f;
+			obj.Material.BaseColor = new PureColorMaterialMap(new Color(0.9f, 0.95f, 0.9f));
 			scene.Objects.Add(obj);
 
 			//obj.Material.BaseColor = new PureColorMaterialMap(new Color(0.1f));
@@ -127,24 +137,26 @@ namespace GenerateProgect {
 			return scene;
 		}
 
+
+
 		static void Main(string[] args) {
 			//MiRaIRanderProjectSaver.Save(Test1(), "A:\\scenes", "testS");
-			//MiRaIRanderProjectSaver.Save(Test1(), "A:\\scenes", "testH");
+			MiRaIRanderProjectSaver.Save(Test3(), "A:\\scenes", "testTS");
 
 			//Scene scene = MiRaIRanderProjectLoader.LoadScene("A:\\scenes\\testS\\testS.mrirpro");
 			//Console.WriteLine(scene.Objects.Count);
 
-			PathTraceRenderOptions options = new PathTraceRenderOptions() {
-				RandonSeed = 20200708,
-				CameraOrigin = new Vector3f(0.0f, 0.7f, 4.0f),
-				Width = 1200,//100,
-				Height = 900,//75,
-				FovHorizon = 60,
-				TraceDeep = 4,
-				SubSampleNumberPerPixel = 160 //16
-			};
-			string[] optcont = PathTraceRenderOptions.SaveOptions(options);
-			File.WriteAllLines("A:\\scenes\\output.rconf", optcont);
+			//PathTraceRenderOptions options = new PathTraceRenderOptions() {
+			//	RandonSeed = 20200708,
+			//	CameraOrigin = new Vector3f(0.0f, 0.7f, 4.0f),
+			//	Width = 1200,//100,
+			//	Height = 900,//75,
+			//	FovHorizon = 60,
+			//	TraceDeep = 4,
+			//	SubSampleNumberPerPixel = 160 //16
+			//};
+			//string[] optcont = PathTraceRenderOptions.SaveOptions(options);
+			//File.WriteAllLines("A:\\scenes\\output.rconf", optcont);
 		}
 	}
 }

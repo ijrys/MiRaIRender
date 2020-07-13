@@ -47,6 +47,11 @@ namespace MiRaIRender.BaseType {
 			RayCastResult result = BVH.Intersection(ray, float.MaxValue);
 			if (result != null) {
 				result.material = Material;
+				if (result.internalPoint) {
+					result.IOR = 1.0f;
+				} else {
+					result.IOR = Material.Refraction.IOR;
+				}
 			}
 			return result;
 		}
