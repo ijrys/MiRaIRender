@@ -1,23 +1,28 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiRaIRender", "MiRaIRender\MiRaIRender.csproj", "{96C94E3B-15F9-4959-A96A-BE014BC906AF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiRaIRender.BaseType", "MiRaIRenderBaseType\MiRaIRender.BaseType.csproj", "{3C5225F1-A055-43C4-8842-9008D4BC4BE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaseType", "Core\BaseType\MiRaIRender.BaseType.csproj", "{3C5225F1-A055-43C4-8842-9008D4BC4BE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Objects", "Core\Objects\MiRaIRender.Objects.csproj", "{01E532A6-BA9D-4663-966A-FBE0C73C5A70}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathTrace", "Render\PathTrace\MiRaIRender.Render.PathTrace.csproj", "{6B24B1CF-085F-4032-AAB4-C2C690BA7204}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{CECF6474-442E-413D-9892-5121D4FAF811}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelLoader", "ModelLoader\ModelLoader.csproj", "{91319854-8700-4BB4-8914-E03EE880C784}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiRaIRender.Render.PathTrace", "MiRaIRender.Render.PathTrace\MiRaIRender.Render.PathTrace.csproj", "{6B24B1CF-085F-4032-AAB4-C2C690BA7204}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageTools", "ImageTools\ImageTools.csproj", "{0F7B22BE-777F-4BE7-9484-0652865F6D45}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfApp1", "WpfApp1\WpfApp1.csproj", "{FACFEE70-43E6-4E97-8581-75A9D7021D7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateProgect", "GenerateProgect\GenerateProgect.csproj", "{BA832F82-1A41-4DBD-8D45-B444D37BEC51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateProgect", "GenerateProgect\GenerateProgect.csproj", "{BA832F82-1A41-4DBD-8D45-B444D37BEC51}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{348BEC59-E4C7-42BC-B8F8-B51DDAE30C47}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Render", "Render", "{88EF2874-2CAB-45DB-A2FE-6C140F04FD2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,9 +96,22 @@ Global
 		{BA832F82-1A41-4DBD-8D45-B444D37BEC51}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA832F82-1A41-4DBD-8D45-B444D37BEC51}.Release|x64.ActiveCfg = Release|Any CPU
 		{BA832F82-1A41-4DBD-8D45-B444D37BEC51}.Release|x64.Build.0 = Release|Any CPU
+		{01E532A6-BA9D-4663-966A-FBE0C73C5A70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01E532A6-BA9D-4663-966A-FBE0C73C5A70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01E532A6-BA9D-4663-966A-FBE0C73C5A70}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{01E532A6-BA9D-4663-966A-FBE0C73C5A70}.Debug|x64.Build.0 = Debug|Any CPU
+		{01E532A6-BA9D-4663-966A-FBE0C73C5A70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01E532A6-BA9D-4663-966A-FBE0C73C5A70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01E532A6-BA9D-4663-966A-FBE0C73C5A70}.Release|x64.ActiveCfg = Release|Any CPU
+		{01E532A6-BA9D-4663-966A-FBE0C73C5A70}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3C5225F1-A055-43C4-8842-9008D4BC4BE2} = {348BEC59-E4C7-42BC-B8F8-B51DDAE30C47}
+		{6B24B1CF-085F-4032-AAB4-C2C690BA7204} = {88EF2874-2CAB-45DB-A2FE-6C140F04FD2F}
+		{01E532A6-BA9D-4663-966A-FBE0C73C5A70} = {348BEC59-E4C7-42BC-B8F8-B51DDAE30C47}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {15BB5DCD-DF3B-48F5-969C-7E321DC56208}

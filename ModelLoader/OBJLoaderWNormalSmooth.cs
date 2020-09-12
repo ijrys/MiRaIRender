@@ -18,7 +18,7 @@ namespace ModelLoader {
 		public static char[] LineSplitChars = new char[] { ' ' };
 		public static char[] PInfoSplitChars = new char[] { '/' };
 
-		public static MashTrigle[] LoadModel(string filePath) {
+		public static MashTrigle[] LoadModel(string filePath, bool negativeZ = false) {
 			string[] lines = File.ReadAllLines(filePath);
 
 			List<MashTrigle> mashes = new List<MashTrigle>();
@@ -53,7 +53,12 @@ namespace ModelLoader {
 						if (!Float.TryParse(parts[3], out p2)) {
 							throw new Exception($"line {linecount} : 不能转换的数据 {parts[3]}");
 						}
-						v.Add(new Vector3f(p0, p1, p2));
+						if (negativeZ) {
+							v.Add(new Vector3f(p0, p1, -p2));
+						}
+						else {
+							v.Add(new Vector3f(p0, p1, p2));
+						}
 						#endregion
 						break;
 					case "vt":
@@ -84,7 +89,12 @@ namespace ModelLoader {
 						if (!Float.TryParse(parts[3], out p2)) {
 							throw new Exception($"line {linecount} : 不能转换的数据 {parts[3]}");
 						}
-						vn.Add(Vector3f.Normalize(new Vector3f(p0, p1, p2)));
+						if (negativeZ) {
+							vn.Add(Vector3f.Normalize(new Vector3f(p0, p1, -p2)));
+						}
+						else {
+							vn.Add(Vector3f.Normalize(new Vector3f(p0, p1, p2)));
+						}
 						#endregion
 						break;
 					case "vp":

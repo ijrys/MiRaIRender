@@ -10,7 +10,7 @@ using Float = System.Single;
 using Math = System.MathF;
 using Vector3f = System.Numerics.Vector3;
 using Vector2f = System.Numerics.Vector2;
-
+using MiRaIRender.BaseType.Spectrum;
 
 namespace MiRaIRender.Render.PathTrace {
 	public class PathTraceRender {
@@ -32,7 +32,7 @@ namespace MiRaIRender.Render.PathTrace {
 		public PathTraceRenderOptions Options;
 
 
-		Color[,] img;
+		RGBSpectrum[,] img;
 #if ReflactDebug
 		public Float[,] debugImg;
 #endif
@@ -41,7 +41,7 @@ namespace MiRaIRender.Render.PathTrace {
 		object renderBlocksLock = new object();
 
 
-		public Color[,] RenderImg() {
+		public RGBSpectrum[,] RenderImg() {
 			scene.PreRender();
 
 			int height = Options.Height,
@@ -49,7 +49,7 @@ namespace MiRaIRender.Render.PathTrace {
 				subSampleNumberPerPixel = Options.SubSampleNumberPerPixel,
 				traceDeep = Options.TraceDeep;
 
-			img = new Color[height, width];
+			img = new RGBSpectrum[height, width];
 			debugImg = new Float[height, width];
 
 			{ // 准备渲染块
@@ -95,7 +95,7 @@ namespace MiRaIRender.Render.PathTrace {
 			Float ymax = xmin / width * height;
 			xmin = -xmin;
 
-			Color[,] imgTmp = new Color[1, 32];
+			RGBSpectrum[,] imgTmp = new RGBSpectrum[1, 32];
 
 			while (RenderBlocks != null) {
 				int blockId;
@@ -116,7 +116,7 @@ namespace MiRaIRender.Render.PathTrace {
 						//}
 						Float x = xmin + i * pixelLength;
 
-						Color color = new Color();
+						RGBSpectrum color = new RGBSpectrum();
 						Float reflactRate = 0.0f;
 						Random random = new Random(Options.RandonSeed + j * width + i);
 						for (int k = 0; k < subSampleNumberPerPixel; k++) {
@@ -126,7 +126,7 @@ namespace MiRaIRender.Render.PathTrace {
 							Vector3f dir = Vector3f.Normalize(new Vector3f(x + xt, y + yt, -1.0f));
 							Ray r = new Ray(Options.CameraOrigin, dir);
 #if ReflactDebug
-							(Color c, Float rrate) = PathTrace(r, traceDeep, random);
+							(RGBSpectrum c, Float rrate) = PathTrace(r, traceDeep, random);
 #else
 							Color c = PathTrace(r, traceDeep, random);
 #endif
@@ -144,14 +144,14 @@ namespace MiRaIRender.Render.PathTrace {
 		}
 
 #if ReflactDebug
-		private (Color, Float) PathTrace(Ray ray, int deepLast, Random random) {
+		private (RGBSpectrum, Float) PathTrace(Ray ray, int deepLast, Random random) {
 			Float reflactRate = 0.0f;
 #else
 		private Color PathTrace(Ray ray, int deepLast, Random random) {
 #endif
 			if (deepLast < 0) {
 #if ReflactDebug
-				return (Color.Dark, reflactRate);
+				return (RGBSpectrum.Dark, reflactRate);
 #else
 				return Color.Dark;
 #endif
@@ -167,10 +167,10 @@ namespace MiRaIRender.Render.PathTrace {
 
 			}
 
-			Color color;
+			RGBSpectrum color;
 			//bool Reflection = false;
 			Vector2f mapCoords = rcr.obj.UV2XY(rcr.uv);
-			Color baseColor = rcr.material.BaseColor.Color(mapCoords);
+			RGBSpectrum baseColor = rcr.material.BaseColor.Color(mapCoords);
 
 			int rvallue = random.Next() & 0xFFFF;
 			{
@@ -237,9 +237,7 @@ namespace MiRaIRender.Render.PathTrace {
 				color *= baseColor;
 
 				Vector3f vitureNormal = rcr.normal; // todo get normal by normal texture
-				if (scene.r_LightObjects.Length == 0) {
-					Console.WriteLine("LightError");
-				}
+
 				foreach (RenderObject item in scene.r_LightObjects) {
 					Vector3f apoint = item.SelectALightPoint(rcr.coords);
 					Vector3f dir = apoint - rcr.coords;
@@ -254,7 +252,7 @@ namespace MiRaIRender.Render.PathTrace {
 					}
 
 					Vector2f xycoords = rayCastResult.obj.UV2XY(rayCastResult.uv);
-					Color light = rayCastResult.material.Light.GetLight(xycoords) * baseColor;
+					RGBSpectrum light = rayCastResult.material.Light.GetLight(xycoords) * baseColor;
 
 					Float lightIntensity = Vector3f.Dot(r.Direction, vitureNormal) / (rayCastResult.distance * rayCastResult.distance);
 					color += light * lightIntensity / (Math.PI * 2);
@@ -264,6 +262,10 @@ namespace MiRaIRender.Render.PathTrace {
 
 		#endregion
 		RTPoint:
+			if (rcr.material.Light.Enable) {
+				Float lightIntensity = Vector3f.Dot(-ray.Direction, rcr.normal) / (rcr.distance * rcr.distance) / (Math.PI * 2.0f);
+				color += rcr.material.Light.GetLight(mapCoords) * lightIntensity;
+			}
 #if ReflactDebug
 			return (color, reflactRate);
 #else

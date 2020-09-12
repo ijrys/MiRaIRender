@@ -2,7 +2,7 @@
   "profiles": {
     "MiRaIRender": {
       "commandName": "Project",
-      "commandLineArgs": "A:\\scenes\\testTS\\testTS.mrirpro A:\\scenes\\debug.rconf A:\\img\\test1"
+      "commandLineArgs": "A:\\scenes\\CornellBox\\CornellBox.mrirpro A:\\scenes\\CornellBox\\review.rconf A:\\img\\test1"
     }
   }
 }

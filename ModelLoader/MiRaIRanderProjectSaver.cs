@@ -11,7 +11,7 @@ using Vector2f = System.Numerics.Vector2;
 
 namespace ModelLoader {
 	public static class MiRaIRanderProjectSaver {
-		private static string ColorDescription(Color color) {
+		private static string ColorDescription(RGBSpectrum color) {
 			return color.R + "," + color.G + "," + color.B;
 		}
 		private static string MaterialMapDescription(IMaterialMapAble materialMap) {
@@ -19,7 +19,7 @@ namespace ModelLoader {
 				return "color " + ColorDescription((materialMap as PureColorMaterialMap).BaseColor);
 			}
 			else if (materialMap.GetType() == typeof(PureGrayMaterialMap)) {
-				Color c = new Color((materialMap as PureGrayMaterialMap).BaseGray);
+				RGBSpectrum c = new RGBSpectrum((materialMap as PureGrayMaterialMap).BaseGray);
 				return "color " + ColorDescription(c);
 			}
 			return "";

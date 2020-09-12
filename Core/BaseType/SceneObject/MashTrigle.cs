@@ -60,7 +60,8 @@ namespace MiRaIRender.BaseType {
 			return new Vector2f();
 		}
 		public override Vector3f SelectALightPoint(Vector3f rayFrom) {
-			throw new NotImplementedException();
+			int i = (int)(rayFrom.X / rayFrom.Length() * (trigles.Length - 1));
+			return trigles[i].SelectALightPoint(rayFrom);
 		}
 	}
 }

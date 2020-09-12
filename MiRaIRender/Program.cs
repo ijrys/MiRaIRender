@@ -12,7 +12,7 @@ using System.Numerics;
 namespace MiRaIRender {
 	class Program {
 		static void Main(string[] args) {
-			Console.WriteLine("MiRaIRender 1.3.0.0");
+			Console.WriteLine("MiRaIRender 1.3.0.6");
 			string projectPath = null;
 			string configPath = null;
 			string outputPath = null;
@@ -80,7 +80,7 @@ namespace MiRaIRender {
 				Options = options
 			};
 			DateTime begin = DateTime.Now;
-			Color[,] img = render.RenderImg();
+			RGBSpectrum[,] img = render.RenderImg();
 			DateTime end = DateTime.Now;
 			Console.WriteLine($"Render end, use time {(end - begin)}");
 

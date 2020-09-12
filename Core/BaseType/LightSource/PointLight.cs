@@ -7,6 +7,7 @@ using Math = System.MathF;
 using Float = System.Single;
 using Vector3f = System.Numerics.Vector3;
 using Vector2f = System.Numerics.Vector2;
+using MiRaIRender.BaseType.Spectrum;
 
 namespace MiRaIRender.BaseType.LightSource {
 	public class PointLight : SceneObject.SceneObjectA {
@@ -21,7 +22,7 @@ namespace MiRaIRender.BaseType.LightSource {
 		public PointLight() {
 			Material = new Material();
 			Material.Light.Enable = true;
-			Material.Light.Intensity = new Color(10.0f);
+			Material.Light.Intensity = new RGBSpectrum(10.0f);
 		}
 
 		public override RayCastResult Intersection(Ray ray, float nowbest) {

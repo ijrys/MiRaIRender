@@ -1,5 +1,6 @@
 ﻿using Vector3f = System.Numerics.Vector3;
 using Vector2f = System.Numerics.Vector2;
+using MiRaIRender.BaseType.Spectrum;
 
 /// <summary>
 /// 材质相关类型
@@ -16,7 +17,7 @@ namespace MiRaIRender.BaseType.Materials {
 		/// <summary>
 		/// 最大光强
 		/// </summary>
-		public Color Intensity = Color.Dark;
+		public RGBSpectrum Intensity = RGBSpectrum.Dark;
 
 		/// <summary>
 		/// 是否启用强度贴图
@@ -27,11 +28,11 @@ namespace MiRaIRender.BaseType.Materials {
 		/// </summary>
 		public IMaterialMapAble IntensityMap;
 
-		public Color GetLight(Vector2f xy) {
+		public RGBSpectrum GetLight(Vector2f xy) {
 			if (!Enable) {
-				return Color.Dark;
+				return RGBSpectrum.Dark;
 			}
-			Color re = Intensity;
+			RGBSpectrum re = Intensity;
 			if (EnableMap && (IntensityMap != null)) {
 				re *= IntensityMap.Color(xy);
 			}

@@ -1,6 +1,7 @@
 ﻿using Float = System.Single;
 using Vector3f = System.Numerics.Vector3;
 using Vector2f = System.Numerics.Vector2;
+using MiRaIRender.BaseType.Spectrum;
 
 /// <summary>
 /// 材质相关类型
@@ -10,14 +11,14 @@ namespace MiRaIRender.BaseType.Materials {
 	/// 纯色贴图
 	/// </summary>
 	public class PureColorMaterialMap : IMaterialMapAble {
-		public Color BaseColor { get; set; }
-		public Color Color(Vector2f position) {
+		public RGBSpectrum BaseColor { get; set; }
+		public RGBSpectrum Color(Vector2f position) {
 			return BaseColor;
 		}
 		public PureColorMaterialMap() {
-			BaseColor = new Color(0.8f);
+			BaseColor = new RGBSpectrum(0.8f);
 		}
-		public PureColorMaterialMap(Color color) {
+		public PureColorMaterialMap(RGBSpectrum color) {
 			BaseColor = color;
 		}
 	}
@@ -25,8 +26,8 @@ namespace MiRaIRender.BaseType.Materials {
 	public class PureGrayMaterialMap : IMaterialGrayMapAble {
 		public Float BaseGray { get; set; } = 0.0f;
 		
-		public Color Color(Vector2f position) {
-			return new Color(BaseGray);
+		public RGBSpectrum Color(Vector2f position) {
+			return new RGBSpectrum(BaseGray);
 		}
 
 		public float Lightness(Vector2f position) {
@@ -39,7 +40,7 @@ namespace MiRaIRender.BaseType.Materials {
 		public PureGrayMaterialMap(Float lightness) {
 			BaseGray = lightness;
 		}
-		public PureGrayMaterialMap(Color color) {
+		public PureGrayMaterialMap(RGBSpectrum color) {
 			BaseGray = (color.R + color.G + color.B) / 3.0f;
 		}
 	}

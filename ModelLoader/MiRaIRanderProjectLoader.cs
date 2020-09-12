@@ -62,7 +62,7 @@ namespace ModelLoader {
 			string type = cmd.Substring(0, idx);
 			string value = cmd.Substring(idx + 1);
 			if (type.ToLower() == "color") {
-				Color color = Color(value);
+				RGBSpectrum color = Color(value);
 				return new PureColorMaterialMap(color);
 			}
 			else if (type.ToLower() == "img") {
@@ -77,7 +77,7 @@ namespace ModelLoader {
 			string type = cmd.Substring(0, idx);
 			string value = cmd.Substring(idx + 1);
 			if (type.ToLower() == "color") {
-				Color color = Color(value);
+				RGBSpectrum color = Color(value);
 				return new PureGrayMaterialMap(color);
 			}
 			else if (type.ToLower() == "img") {
@@ -87,20 +87,20 @@ namespace ModelLoader {
 				throw new Exception("不支持的命令");
 			}
 		}
-		private static Color Color(string cmd) {
+		private static RGBSpectrum Color(string cmd) {
 			string[] strs = cmd.Split(',');
-			Color color;
+			RGBSpectrum color;
 			if (strs.Length == 0) {
 				float v = 0.0f;
 				float.TryParse(strs[0], out v);
-				color = new Color(v);
+				color = new RGBSpectrum(v);
 			}
 			else if (strs.Length == 3) {
 				float v0 = 0.0f, v1 = 0.0f, v2 = 0.0f;
 				float.TryParse(strs[0], out v0);
 				float.TryParse(strs[1], out v1);
 				float.TryParse(strs[2], out v2);
-				color = new Color(v0, v1, v2);
+				color = new RGBSpectrum(v0, v1, v2);
 			}
 			else {
 				throw new Exception("错误的数据个数");

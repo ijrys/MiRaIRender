@@ -1,6 +1,7 @@
 ﻿using Float = System.Single;
 using Vector3f = System.Numerics.Vector3;
 using Vector2f = System.Numerics.Vector2;
+using MiRaIRender.BaseType.Spectrum;
 
 /// <summary>
 /// 材质相关类型
@@ -49,9 +50,9 @@ namespace MiRaIRender.BaseType.Materials {
 		/// </summary>
 		/// <param name="xy"></param>
 		/// <returns></returns>
-		public Color GetMetallicColor(Vector2f xy) {
+		public RGBSpectrum GetMetallicColor(Vector2f xy) {
 			if (MetallicColorMap == null) {
-				return new Color(0.9f);
+				return new RGBSpectrum(0.9f);
 			}
 			return MetallicColorMap.Color(xy);
 		}

@@ -1,13 +1,14 @@
 ﻿using Float = System.Single;
 using Vector3f = System.Numerics.Vector3;
 using Vector2f = System.Numerics.Vector2;
+using MiRaIRender.BaseType.Spectrum;
 
 /// <summary>
 /// 材质相关类型
 /// </summary>
 namespace MiRaIRender.BaseType.Materials {
 	public interface IMaterialMapAble {
-		public Color Color(Vector2f position);
+		public RGBSpectrum Color(Vector2f position);
 	}
 
 	/// <summary>
@@ -15,9 +16,9 @@ namespace MiRaIRender.BaseType.Materials {
 	/// </summary>
 	public interface IMaterialGrayMapAble : IMaterialMapAble {
 		public Float Lightness(Vector2f position);
-		Color IMaterialMapAble.Color(Vector2f position) {
+		RGBSpectrum IMaterialMapAble.Color(Vector2f position) {
 			Float l = Lightness(position);
-			return new Color(l);
+			return new RGBSpectrum(l);
 		}
 	}
 }

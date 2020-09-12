@@ -16,6 +16,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="LightSource\**" />
+    <EmbeddedResource Remove="LightSource\**" />
+    <None Remove="LightSource\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="SkyBox\DefaultSkyBox.cs" />
     <Compile Remove="Vector2f.cs" />
     <Compile Remove="Vector3f.cs" />
   </ItemGroup>
