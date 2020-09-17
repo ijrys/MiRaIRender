@@ -1,13 +1,14 @@
-﻿using MiRaIRender.BaseType.SceneObject;
+﻿using MiRaIRender.BaseType;
+using MiRaIRender.BaseType.SceneObject;
 using System;
-using Vector3f = System.Numerics.Vector3;
 using Vector2f = System.Numerics.Vector2;
+using Vector3f = System.Numerics.Vector3;
 
-namespace MiRaIRender.BaseType {
+namespace MiRaIRender.Objects.SceneObject {
 	/// <summary>
 	/// 三角形网格对象
 	/// </summary>
-	public class MashTrigle : SceneObject.SceneObjectA {
+	public class MashTrigle : RenderObject {
 		public TrigleFace[] trigles;
 
 		private BVH BVH;
@@ -20,13 +21,13 @@ namespace MiRaIRender.BaseType {
 					bounds = Bounds3.Union(bounds, item.BoundBox);
 					//item.material = _material;
 				}
-				this._boundBox = bounds;
+				this.BoundBox = bounds;
 			}
 			else {
-				this._boundBox = new Bounds3();
+				this.BoundBox = new Bounds3();
 			}
 
-			CenterPoint = (_boundBox.pMin + _boundBox.pMax) * 0.5f;
+			CenterPoint = (BoundBox.pMin + BoundBox.pMax) * 0.5f;
 			BVH = BVH.Build(trigles.AsSpan());
 		}
 
@@ -38,7 +39,7 @@ namespace MiRaIRender.BaseType {
 		public override RayCastResult Intersection(Ray ray, float nowbest) {
 			// 包围盒测试失败
 			{
-				(bool happened, float mint) = _boundBox.Intersection(ray);
+				(bool happened, float mint) = BoundBox.Intersection(ray);
 				if (!happened || mint > nowbest) { // 未相交 或 当前最小解已不是最优
 					return null;
 				}

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Float = System.Single;
+using MiRaIRender.BaseType.Spectrum;
 
 /// <summary>
 /// 材质相关类型
@@ -13,7 +14,7 @@ namespace MiRaIRender.BaseType.Materials {
 		/// <summary>
 		/// 基础色
 		/// </summary>
-		public IMaterialMapAble BaseColor= new PureColorMaterialMap();
+		public IMaterialMapAble<XYZSpectrum> BaseColor = new PureXYZColorMaterialMap();
 
 		/// <summary>
 		/// 法线贴图【未启用】
@@ -47,6 +48,9 @@ namespace MiRaIRender.BaseType.Materials {
 		/// </summary>
 		public RefractionProperty Refraction = new RefractionProperty();
 
+		/// <summary>
+		/// 发光
+		/// </summary>
 		public LightProperty Light = new LightProperty();
 	}
 }

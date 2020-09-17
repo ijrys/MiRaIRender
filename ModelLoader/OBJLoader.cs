@@ -1,11 +1,10 @@
-﻿using MiRaIRender.BaseType;
-using MiRaIRender.BaseType.Materials;
+﻿using MiRaIRender.Objects.SceneObject;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Float = System.Single;
-using Vector3f = System.Numerics.Vector3;
 using Vector2f = System.Numerics.Vector2;
+using Vector3f = System.Numerics.Vector3;
 
 namespace ModelLoader {
 	public class OBJLoader {

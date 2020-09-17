@@ -5,24 +5,34 @@
 /// </summary>
 namespace MiRaIRender.BaseType.Spectrum {
 
-
-	public struct XYZSpectrum {
+	/// <summary>
+	/// XYZ波长
+	/// </summary>
+	public struct XYZSpectrum : ISpectrum {
+		private Float lightness;
 		public Float X, Y, Z;
 
 		public XYZSpectrum(Float v) {
 			X = v;
 			Y = v;
 			Z = v;
+			lightness = v; // todo:更合理的计算
 		}
 
 		public XYZSpectrum(Float x, Float y, Float z) {
 			X = x;
 			Y = y;
 			Z = z;
+			lightness = (X + Y + Z) / 3.0f;// todo:更合理的计算
 		}
 
 		public override string ToString() {
 			return $"Color:{{X:{X:0.000}, Y:{Y:0.000}, Z:{Z:0.000} }}";
+		}
+		public Float Lightness {
+			get {
+				return lightness;
+			}
 		}
 
 		#region Operators
@@ -73,5 +83,7 @@ namespace MiRaIRender.BaseType.Spectrum {
 		}
 
 		#endregion
+
+		public static XYZSpectrum Dark = new XYZSpectrum(0.0f, 0.0f, 0.0f);
 	}
 }

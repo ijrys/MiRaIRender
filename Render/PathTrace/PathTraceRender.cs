@@ -32,7 +32,7 @@ namespace MiRaIRender.Render.PathTrace {
 		public PathTraceRenderOptions Options;
 
 
-		RGBSpectrum[,] img;
+		XYZSpectrum[,] img;
 #if ReflactDebug
 		public Float[,] debugImg;
 #endif
@@ -41,15 +41,19 @@ namespace MiRaIRender.Render.PathTrace {
 		object renderBlocksLock = new object();
 
 
-		public RGBSpectrum[,] RenderImg() {
+		public XYZSpectrum[,] RenderImg() {
 			scene.PreRender();
+
+			//img = new XYZSpectrum[1, 1];
+			//img[0, 0] = RenderPix(97, 197);
+			//return img;
 
 			int height = Options.Height,
 				width = Options.Width,
 				subSampleNumberPerPixel = Options.SubSampleNumberPerPixel,
 				traceDeep = Options.TraceDeep;
 
-			img = new RGBSpectrum[height, width];
+			img = new XYZSpectrum[height, width];
 			debugImg = new Float[height, width];
 
 			{ // 准备渲染块
@@ -68,21 +72,56 @@ namespace MiRaIRender.Render.PathTrace {
 					}
 				}
 				RenderBlocks = renderBlocks.ToArray();
+				Console.WriteLine($"there are {RenderBlocks.Length} block(s) totaly");
 				nextBlockId = 0;
 			}
 
-			//Thread th1 = new Thread(RenderABlock);
-			//th1.Start();
-			//Thread th2 = new Thread(RenderABlock);
-			//th2.Start();
-			//Thread th3 = new Thread(RenderABlock);
-			//th3.Start();
-			//th1.Join();
-			//th2.Join();
-			//th3.Join();
-			RenderABlock();
+			Thread th1 = new Thread(RenderABlock);
+			th1.Start();
+			Thread th2 = new Thread(RenderABlock);
+			th2.Start();
+			Thread th3 = new Thread(RenderABlock);
+			th3.Start();
+			th1.Join();
+			th2.Join();
+			th3.Join();
+			//RenderABlock();
 
 			return img;
+		}
+
+		private XYZSpectrum RenderPix (int l, int t) {
+			int height = Options.Height,
+				width = Options.Width,
+				subSampleNumberPerPixel = Options.SubSampleNumberPerPixel,
+				traceDeep = Options.TraceDeep;
+			Float xmin = Math.Tan(Tools.GetRadianByAngle(Options.FovHorizon / 2));
+			Float pixelLength = (xmin * 2) / width;
+			Float ymax = xmin / width * height;
+			xmin = -xmin;
+
+			Float y = ymax - t * pixelLength;
+			Float x = xmin + l * pixelLength;
+
+			XYZSpectrum color = new XYZSpectrum();
+			Float reflactRate = 0.0f;
+			Random random = new Random(Options.RandonSeed + t * width + l);
+			for (int k = 0; k < subSampleNumberPerPixel; k++) {
+				Float xt = (Float)random.NextDouble() * pixelLength;
+				Float yt = (Float)random.NextDouble() * pixelLength;
+
+				Vector3f dir = Vector3f.Normalize(new Vector3f(x + xt, y + yt, -1.0f));
+				Ray r = new Ray(Options.CameraOrigin, dir);
+#if ReflactDebug
+				(XYZSpectrum c, Float rrate) = PathTrace(r, traceDeep, random);
+#else
+							Color c = PathTrace(r, traceDeep, random);
+#endif
+				color += c;
+				reflactRate += rrate;
+			}
+			color /= subSampleNumberPerPixel;
+			return color;
 		}
 
 		private void RenderABlock() {
@@ -95,7 +134,7 @@ namespace MiRaIRender.Render.PathTrace {
 			Float ymax = xmin / width * height;
 			xmin = -xmin;
 
-			RGBSpectrum[,] imgTmp = new RGBSpectrum[1, 32];
+			XYZSpectrum[,] imgTmp = new XYZSpectrum[1, 32];
 
 			while (RenderBlocks != null) {
 				int blockId;
@@ -116,7 +155,7 @@ namespace MiRaIRender.Render.PathTrace {
 						//}
 						Float x = xmin + i * pixelLength;
 
-						RGBSpectrum color = new RGBSpectrum();
+						XYZSpectrum color = new XYZSpectrum();
 						Float reflactRate = 0.0f;
 						Random random = new Random(Options.RandonSeed + j * width + i);
 						for (int k = 0; k < subSampleNumberPerPixel; k++) {
@@ -126,7 +165,7 @@ namespace MiRaIRender.Render.PathTrace {
 							Vector3f dir = Vector3f.Normalize(new Vector3f(x + xt, y + yt, -1.0f));
 							Ray r = new Ray(Options.CameraOrigin, dir);
 #if ReflactDebug
-							(RGBSpectrum c, Float rrate) = PathTrace(r, traceDeep, random);
+							(XYZSpectrum c, Float rrate) = PathTrace(r, traceDeep, random);
 #else
 							Color c = PathTrace(r, traceDeep, random);
 #endif
@@ -144,14 +183,14 @@ namespace MiRaIRender.Render.PathTrace {
 		}
 
 #if ReflactDebug
-		private (RGBSpectrum, Float) PathTrace(Ray ray, int deepLast, Random random) {
+		private (XYZSpectrum, Float) PathTrace(Ray ray, int deepLast, Random random) {
 			Float reflactRate = 0.0f;
 #else
 		private Color PathTrace(Ray ray, int deepLast, Random random) {
 #endif
 			if (deepLast < 0) {
 #if ReflactDebug
-				return (RGBSpectrum.Dark, reflactRate);
+				return (XYZSpectrum.Dark, reflactRate);
 #else
 				return Color.Dark;
 #endif
@@ -160,17 +199,17 @@ namespace MiRaIRender.Render.PathTrace {
 
 			if (rcr == null) { // 未追踪到任何对象
 #if ReflactDebug
-				return (scene.SkyBox.SkyColor(ray), reflactRate);
+				return (scene.SkyBox.ViewColor(ray), reflactRate);
 #else
 				return scene.SkyBox.SkyColor(ray);
 #endif
 
 			}
 
-			RGBSpectrum color;
+			XYZSpectrum color;
 			//bool Reflection = false;
 			Vector2f mapCoords = rcr.obj.UV2XY(rcr.uv);
-			RGBSpectrum baseColor = rcr.material.BaseColor.Color(mapCoords);
+			XYZSpectrum baseColor = rcr.material.BaseColor.Color(mapCoords);
 
 			int rvallue = random.Next() & 0xFFFF;
 			{
@@ -252,7 +291,7 @@ namespace MiRaIRender.Render.PathTrace {
 					}
 
 					Vector2f xycoords = rayCastResult.obj.UV2XY(rayCastResult.uv);
-					RGBSpectrum light = rayCastResult.material.Light.GetLight(xycoords) * baseColor;
+					XYZSpectrum light = rayCastResult.material.Light.GetLight(xycoords) * baseColor;
 
 					Float lightIntensity = Vector3f.Dot(r.Direction, vitureNormal) / (rayCastResult.distance * rayCastResult.distance);
 					color += light * lightIntensity / (Math.PI * 2);

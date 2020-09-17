@@ -2,17 +2,16 @@
 
 using ImageTools;
 using MiRaIRender.BaseType;
-using MiRaIRender.BaseType.LightSource;
-using MiRaIRender.BaseType.Materials;
+using MiRaIRender.BaseType.Spectrum;
+using MiRaIRender.Objects.Skybox;
 using MiRaIRender.Render.PathTrace;
 using ModelLoader;
 using System;
 using System.IO;
-using System.Numerics;
 namespace MiRaIRender {
 	class Program {
 		static void Main(string[] args) {
-			Console.WriteLine("MiRaIRender 1.3.0.6");
+			Console.WriteLine("MiRaIRender 1.4.0.2");
 			string projectPath = null;
 			string configPath = null;
 			string outputPath = null;
@@ -60,7 +59,7 @@ namespace MiRaIRender {
 				while (true);
 			}
 
-			(Scene scene, bool ok) = MiRaIRanderProjectLoader.LoadScene(projectPath);
+			(Scene scene, bool ok) = MiRaIRanderProjectLoader.LoadScene(projectPath, DefaultSkyBox.Default);
 			if (!ok) {
 				Console.WriteLine("project load error");
 				return;
@@ -80,19 +79,21 @@ namespace MiRaIRender {
 				Options = options
 			};
 			DateTime begin = DateTime.Now;
-			RGBSpectrum[,] img = render.RenderImg();
+			XYZSpectrum[,] img = render.RenderImg();
 			DateTime end = DateTime.Now;
 			Console.WriteLine($"Render end, use time {(end - begin)}");
 
 			ColorRGB8[,] simg = ImageTools.ColorConverter.ConvertToRGB8Image(img);
 			//string fname = $"A:\\img\\{FileName()}";
 
-			Console.WriteLine("save to " + outputPath + ".ppm");
-			ImageSave.ImageSave_PPM(simg, outputPath + ".ppm");
+			Console.WriteLine("save to " + outputPath + ".png");
+			//ImageSave.ImageSave_PPM(simg, outputPath + ".ppm");
+			ImageSave.ImageSave_PNG(simg, outputPath + ".png");
 
 #if ReflactDebug
 			simg = ImageTools.ColorConverter.ConvertToRGB8Image(render.debugImg);
-			ImageSave.ImageSave_PPM(simg, outputPath + "_dbg.ppm");
+			//ImageSave.ImageSave_PPM(simg, outputPath + "_dbg.ppm");
+			ImageSave.ImageSave_PNG(simg, outputPath + "_dbg.png");
 #endif
 		}
 		//static string FileName() {

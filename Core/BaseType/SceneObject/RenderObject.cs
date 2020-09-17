@@ -4,16 +4,27 @@ using Vector2f = System.Numerics.Vector2;
 
 namespace MiRaIRender.BaseType.SceneObject {
 	public abstract class RenderObject : IRayCastAble { //: IRenderObjectAble {
+		/// <summary>
+		/// 包围盒
+		/// </summary>
+		public Bounds3 BoundBox { get; protected set; }
 
-		protected Bounds3 _boundBox;
+		/// <summary>
+		/// 材质
+		/// </summary>
+		public Materials.Material Material { get; set; } = new Materials.Material();
 
-		public Bounds3 BoundBox { get => _boundBox; }
+		/// <summary>
+		/// 中心点
+		/// </summary>
+		public Vector3f CenterPoint { get; protected set; }
 
-		public Vector3f CenterPoint {
-			get;
-			protected set;
-		}
-
+		/// <summary>
+		/// 光线相交运算
+		/// </summary>
+		/// <param name="ray"></param>
+		/// <param name="nowbest"></param>
+		/// <returns></returns>
 		public abstract RayCastResult Intersection(Ray ray, float nowbest);
 
 		public abstract Vector2f UV2XY(Vector2f uv);

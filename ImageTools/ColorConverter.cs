@@ -1,9 +1,9 @@
 ﻿using MiRaIRender.BaseType;
 using System;
 using System.Security.Cryptography;
+using MiRaIRender.BaseType.Spectrum;
 using Math = System.MathF;
 using Float = System.Single;
-using MiRaIRender.BaseType.Spectrum;
 
 namespace ImageTools {
 
@@ -56,12 +56,23 @@ namespace ImageTools {
 			}
 			return re;
 		}
+		public static ColorRGB8[,] ConvertToRGB8Image(XYZSpectrum[,] img) {
+			int imgh = img.GetLength(0), imgw = img.GetLength(1);
+			ColorRGB8[,] re = new ColorRGB8[imgh, imgw];
+			for (int j = 0; j < imgh; j++) {
+				for (int i = 0; i < imgw; i++) {
+					re[j, i] = GetColor8Gamma22(img[j, i].ToRGB());
+				}
+			}
+			return re;
+		}
+
 		public static ColorRGB8[,] ConvertToRGB8Image(Float[,] img) {
 			int imgh = img.GetLength(0), imgw = img.GetLength(1);
 			ColorRGB8[,] re = new ColorRGB8[imgh, imgw];
 			for (int j = 0; j < imgh; j++) {
 				for (int i = 0; i < imgw; i++) {
-					byte g = (byte)(Tools.Clamp(0.0f, 10.0f, img[j, i]) * 255);
+					byte g = (byte)(Tools.Clamp(img[j, i] * 255, 0.0f, 10.0f));
 					re[j, i] = new ColorRGB8(g);
 				}
 			}
@@ -74,7 +85,7 @@ namespace ImageTools {
 			float mvalue = 1.0f / maxvalue;
 			for (int j = 0; j < imgh; j++) {
 				for (int i = 0; i < imgw; i++) {
-					byte b = (byte)(Tools.Clamp(0.0f, 1.0f, data[j, i] * mvalue) * 255);
+					byte b = (byte)(Tools.Clamp(data[j, i] * mvalue, 0.0f, 1.0f) * 255);
 					re[j, i] = new ColorRGB8(b);
 				}
 			}

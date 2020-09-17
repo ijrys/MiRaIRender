@@ -9,10 +9,6 @@ namespace MiRaIRender.BaseType {
 	/// 路径追踪测试结果
 	/// </summary>
 	public class RayCastResult {
-		/// <summary>
-		/// 追踪发生【弃用】
-		/// </summary>
-		//public bool happened = false;
 
 		/// <summary>
 		/// 相交点是否在物体内部

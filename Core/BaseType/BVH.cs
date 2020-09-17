@@ -13,7 +13,6 @@ namespace MiRaIRender.BaseType {
 		IRayCastAble[] Childs;
 		public Bounds3 BoundBox { get; set; }
 
-
 		public RayCastResult Intersection(Ray ray, float nowbest) {
 			(bool cast, float mint) = BoundBox.Intersection(ray);
 			if (!cast || mint > nowbest) { // 未相交 或 当前最小解已不是最优
@@ -33,7 +32,6 @@ namespace MiRaIRender.BaseType {
 
 			return result;
 		}
-
 
 		private static int QuickCoordationX<T>(Span<T> objs) where T : RenderObject {
 			int len = objs.Length;

@@ -94,16 +94,31 @@ namespace MiRaIRender.BaseType {
 			return re;
 		}
 
-		public static Float Clamp(Float min, Float max, Float value) {
+		public static Float Clamp(this Float value, Float min, Float max) {
 			if (value < min) { return min; }
 			if (value > max) { return max; }
 			return value;
 		}
-		public static int Clamp(int min, int max, int value) {
+		public static Float Clamp01(this Float value) {
+			if (value < 0.0f) { return 0.0f; }
+			if (value > 1.0f) { return 1.0f; }
+			return value;
+		}
+		public static int Clamp(this int value, int max, int min) {
 			if (value < min) { return min; }
 			if (value > max) { return max; }
 			return value;
 		}
+		//public static Float Clamp(Float min, Float max, Float value) {
+		//	if (value < min) { return min; }
+		//	if (value > max) { return max; }
+		//	return value;
+		//}
+		//public static int Clamp(int min, int max, int value) {
+		//	if (value < min) { return min; }
+		//	if (value > max) { return max; }
+		//	return value;
+		//}
 
 		public static Vector3f UVMerge(Float u, Float v, Vector3f n0, Vector3f n1, Vector3f n2) {
 			return (1 - u - v) * n0 + u * n1 + v * n2;

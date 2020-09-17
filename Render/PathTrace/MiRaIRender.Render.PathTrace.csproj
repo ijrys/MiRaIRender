@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MiRaIRenderBaseType\MiRaIRender.BaseType.csproj" />
+    <ProjectReference Include="..\..\Core\BaseType\MiRaIRender.BaseType.csproj" />
   </ItemGroup>
 
 </Project>

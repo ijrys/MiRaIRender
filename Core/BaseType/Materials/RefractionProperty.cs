@@ -21,21 +21,21 @@ namespace MiRaIRender.BaseType.Materials {
 		public Float Refraction {
 			get => _refraction;
 			set {
-				_refraction = Tools.Clamp(0.0f, 1.0f, value);
+				_refraction = value.Clamp01(); //Tools.Clamp(value, 0.0f, 1.0f);
 			}
 		}
 
 		public Float IOR {
 			get => _ior;
 			set {
-				_ior = Tools.Clamp(0.001f, 100f, value);
+				_ior = value.Clamp(0.001f, 100f); //Tools.Clamp(value, 0.001f, 100f);
 			}
 		}
 
 		/// <summary>
 		/// 透射率强度贴图
 		/// </summary>
-		public IMaterialGrayMapAble IntensityMap = null;
+		public IMaterialMapAble IntensityMap = null;
 
 		public Float GetRefraction(Vector2f xy) {
 			if (!Enable) {

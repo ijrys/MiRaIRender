@@ -17,15 +17,10 @@ namespace MiRaIRender.BaseType.Materials {
 		/// </summary>
 		public Float Metallic = 0.2f;
 
-		///// <summary>
-		///// 是否启用强度贴图
-		///// </summary>
-		//public bool EnableMap = false;
-
 		/// <summary>
 		/// 强度贴图
 		/// </summary>
-		public IMaterialGrayMapAble IntensityMap = null; //new PureGrayMaterialMap() { BaseGray = 0.2f };
+		public IMaterialMapAble IntensityMap = null; //new PureGrayMaterialMap() { BaseGray = 0.2f };
 
 		/// <summary>
 		/// 获取金属度
@@ -43,16 +38,16 @@ namespace MiRaIRender.BaseType.Materials {
 		/// <summary>
 		/// 金属吸收色贴图
 		/// </summary>
-		public IMaterialMapAble MetallicColorMap = null;
+		public IMaterialMapAble<XYZSpectrum> MetallicColorMap = null;
 
 		/// <summary>
 		/// 获取金属吸收色
 		/// </summary>
 		/// <param name="xy"></param>
 		/// <returns></returns>
-		public RGBSpectrum GetMetallicColor(Vector2f xy) {
+		public XYZSpectrum GetMetallicColor(Vector2f xy) {
 			if (MetallicColorMap == null) {
-				return new RGBSpectrum(0.9f);
+				return new XYZSpectrum(0.9f);
 			}
 			return MetallicColorMap.Color(xy);
 		}

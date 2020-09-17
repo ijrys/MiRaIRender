@@ -1,12 +1,11 @@
-﻿using MiRaIRender.BaseType.Materials;
+﻿using MiRaIRender.BaseType;
 using MiRaIRender.BaseType.SceneObject;
 using System;
 using Float = System.Single;
-using Math = System.MathF;
-using Vector3f = System.Numerics.Vector3;
 using Vector2f = System.Numerics.Vector2;
+using Vector3f = System.Numerics.Vector3;
 
-namespace MiRaIRender.BaseType {
+namespace MiRaIRender.Objects.SceneObject {
 	public class TrigleFace : RenderObject {
 		/// <summary>
 		/// 顶点
@@ -33,7 +32,7 @@ namespace MiRaIRender.BaseType {
 			e1 = v1 - v0;
 			e2 = v2 - v0;
 
-			_boundBox = Bounds3.Union(new Bounds3(v0, v1), v2);
+			BoundBox = new Bounds3(v0, v1, v2);
 			CenterPoint = (v0 + v1 + v2) / 3.0f;
 		}
 
@@ -69,7 +68,6 @@ namespace MiRaIRender.BaseType {
 			
 			result.distance = t_tmp;
 			result.obj = this;
-			//result.material = material;
 			result.coords = ray.Origin + t_tmp * ray.Direction;
 			result.uv = new Vector2f(u, v);
 			result.normal = Tools.UVMerge(u, v, n0, n1, n2);
@@ -78,36 +76,6 @@ namespace MiRaIRender.BaseType {
 				result.normal = -result.normal;
 			}
 			return result;
-
-			//RayCastResult result = null;
-
-			//Vector3f P = ray.Direction ^ e2;
-			//Vector3f T = ray.Origin - v0;
-			//Vector3f Q = T ^ e1;
-			//Float det = P & e1;
-
-			//if (Math.Abs(det) < Tools.EPSILON) {
-			//	goto RTR;
-			//}
-
-			//det = 1.0f / det;
-			//Float t = Q & e2 * det;
-			//Float u = P & T * det;
-			//Float v = Q & ray.Direction * det;
-
-			//if (t < 0 || u + v > 1.0f) {
-			//	goto RTR;
-			//}
-
-			//result = new RayCastResult();
-			//result.happened = true;
-			//result.distance = t;
-			//result.obj = this;
-			//result.coords = ray.Origin + t * ray.Direction;
-			//result.uv = new Vector2f(u, v);
-			//result.normal = Vector3f.UVMerge(u, v, n0, n1, n2);
-			//RTR:
-			//	return result;
 
 		}
 

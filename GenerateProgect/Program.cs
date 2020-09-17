@@ -27,7 +27,7 @@ namespace GenerateProgect {
 			obj = objs[0];
 			obj.Material.Metallic.Metallic = 0.9f;
 			obj.Material.Roughness = 0.2f;
-			obj.Material.BaseColor = new PureColorMaterialMap(new RGBSpectrum(0.3f, 0.3f, 0.3f));
+			obj.Material.BaseColor = new PureXYZColorMaterialMap(new RGBSpectrum(0.3f, 0.3f, 0.3f));
 			scene.Objects.Add(obj);
 
 			PointLight pLight1 = new PointLight() {
@@ -68,7 +68,7 @@ namespace GenerateProgect {
 			obj = objs[0];
 			obj.Material.Metallic.Metallic = 0.9f;
 			obj.Material.Roughness = 0.8f;
-			obj.Material.BaseColor = new PureColorMaterialMap(new RGBSpectrum(0.3f, 0.3f, 0.3f));
+			obj.Material.BaseColor = new PureXYZColorMaterialMap(new RGBSpectrum(0.3f, 0.3f, 0.3f));
 			scene.Objects.Add(obj);
 
 			objs = OBJLoaderWNormalSmooth.LoadModel("A:\\m3_b1.obj");
@@ -78,7 +78,7 @@ namespace GenerateProgect {
 			obj.Material.Refraction.Refraction = 0.9f;
 			obj.Material.Refraction.IOR = 1.4f;
 			obj.Material.Roughness = 0.1f;
-			obj.Material.BaseColor = new PureColorMaterialMap(new RGBSpectrum(0.9f, 0.95f, 0.9f));
+			obj.Material.BaseColor = new PureXYZColorMaterialMap(new RGBSpectrum(0.9f, 0.95f, 0.9f));
 			scene.Objects.Add(obj);
 
 			//obj.Material.BaseColor = new PureColorMaterialMap(new Color(0.1f));
@@ -139,16 +139,16 @@ namespace GenerateProgect {
 
 		static Scene CornellBox() {
 			Material white = new Material() {
-				BaseColor = new PureColorMaterialMap(new RGBSpectrum(0.725f, 0.71f, 0.68f)),
+				BaseColor = new PureXYZColorMaterialMap(new RGBSpectrum(0.725f, 0.71f, 0.68f)),
 			};
 			Material red = new Material() {
-				BaseColor = new PureColorMaterialMap(new RGBSpectrum(0.63f, 0.065f, 0.05f)),
+				BaseColor = new PureXYZColorMaterialMap(new RGBSpectrum(0.63f, 0.065f, 0.05f)),
 			};
 			Material green = new Material() {
-				BaseColor = new PureColorMaterialMap(new RGBSpectrum(0.14f, 0.45f, 0.091f)),
+				BaseColor = new PureXYZColorMaterialMap(new RGBSpectrum(0.14f, 0.45f, 0.091f)),
 			};
 			Material light = new Material() {
-				BaseColor = new PureColorMaterialMap(new RGBSpectrum(0.65f)),
+				BaseColor = new PureXYZColorMaterialMap(new RGBSpectrum(0.65f)),
 			};
 			light.Light.Enable = true;
 			light.Light.Intensity = 8.0f * new RGBSpectrum(0.747f + 0.058f, 0.747f + 0.258f, 0.747f) + 15.6f * new RGBSpectrum(0.740f + 0.287f, 0.740f + 0.160f, 0.740f) + 18.4f * new RGBSpectrum(0.737f + 0.642f, 0.737f + 0.159f, 0.737f);

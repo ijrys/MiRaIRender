@@ -5,9 +5,9 @@
 /// </summary>
 namespace MiRaIRender.BaseType.Spectrum {
 	/// <summary>
-	/// 颜色
+	/// RGB颜色
 	/// </summary>
-	public struct RGBSpectrum {
+	public struct RGBSpectrum : ISpectrum {
 		public Float R, G, B;
 		public RGBSpectrum(Float v) {
 			R = v;
@@ -22,6 +22,12 @@ namespace MiRaIRender.BaseType.Spectrum {
 
 		public override string ToString() {
 			return $"Color:{{R:{R:0.000}, G:{G:0.000}, B:{B:0.000} }}";
+		}
+
+		public Float Lightness {
+			get {
+				return (R + G + B) / 3.0f;
+			}
 		}
 
 		#region Operators
@@ -70,8 +76,10 @@ namespace MiRaIRender.BaseType.Spectrum {
 		public static RGBSpectrum FromRGB(XYZSpectrum xyz) {
 			return SpectrumTools.XYZToRGB(xyz);
 		}
+
 		#endregion
 
 		public static readonly RGBSpectrum Dark = new RGBSpectrum(0.0f, 0.0f, 0.0f);
+
 	}
 }

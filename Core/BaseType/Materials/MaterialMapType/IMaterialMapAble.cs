@@ -8,17 +8,14 @@ using MiRaIRender.BaseType.Spectrum;
 /// </summary>
 namespace MiRaIRender.BaseType.Materials {
 	public interface IMaterialMapAble {
-		public RGBSpectrum Color(Vector2f position);
+		public Float Lightness(Vector2f position);
 	}
 
 	/// <summary>
-	/// 灰度贴图
+	/// 贴图接口
 	/// </summary>
-	public interface IMaterialGrayMapAble : IMaterialMapAble {
-		public Float Lightness(Vector2f position);
-		RGBSpectrum IMaterialMapAble.Color(Vector2f position) {
-			Float l = Lightness(position);
-			return new RGBSpectrum(l);
-		}
+	/// <typeparam name="LightMod"></typeparam>
+	public interface IMaterialMapAble<LightMod> : IMaterialMapAble where LightMod : ISpectrum {
+		public LightMod Color(Vector2f position);
 	}
 }

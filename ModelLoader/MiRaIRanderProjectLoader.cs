@@ -1,13 +1,15 @@
 ﻿using MiRaIRender.BaseType;
-using MiRaIRender.BaseType.LightSource;
 using MiRaIRender.BaseType.Materials;
 using MiRaIRender.BaseType.SceneObject;
+using MiRaIRender.BaseType.Skybox;
+using MiRaIRender.BaseType.Spectrum;
+using MiRaIRender.Objects.LightSource;
+using MiRaIRender.Objects.SceneObject;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using Vector3f = System.Numerics.Vector3;
 using Vector2f = System.Numerics.Vector2;
+using Vector3f = System.Numerics.Vector3;
 
 namespace ModelLoader {
 	public static class MiRaIRanderProjectLoader {
@@ -57,13 +59,13 @@ namespace ModelLoader {
 			return result;
 		}
 
-		private static IMaterialMapAble MaterialMap(string cmd) {
+		private static IMaterialMapAble<XYZSpectrum> MaterialMapXYZ(string cmd) {
 			int idx = cmd.IndexOf(' ');
 			string type = cmd.Substring(0, idx);
 			string value = cmd.Substring(idx + 1);
 			if (type.ToLower() == "color") {
 				RGBSpectrum color = Color(value);
-				return new PureColorMaterialMap(color);
+				return new PureXYZColorMaterialMap(color.ToXYZ());
 			}
 			else if (type.ToLower() == "img") {
 				throw new Exception("尚不支持图片贴图");
@@ -72,13 +74,13 @@ namespace ModelLoader {
 				throw new Exception("不支持的命令");
 			}
 		}
-		private static IMaterialGrayMapAble MaterialGrayMap(string cmd) {
+		private static IMaterialMapAble<RGBSpectrum> MaterialMapRGB(string cmd) {
 			int idx = cmd.IndexOf(' ');
 			string type = cmd.Substring(0, idx);
 			string value = cmd.Substring(idx + 1);
 			if (type.ToLower() == "color") {
 				RGBSpectrum color = Color(value);
-				return new PureGrayMaterialMap(color);
+				return new PureRGBColorMaterialMap(color);
 			}
 			else if (type.ToLower() == "img") {
 				throw new Exception("尚不支持图片贴图");
@@ -87,6 +89,21 @@ namespace ModelLoader {
 				throw new Exception("不支持的命令");
 			}
 		}
+		//private static IMaterialMapAble MaterialGrayMap(string cmd) {
+		//	int idx = cmd.IndexOf(' ');
+		//	string type = cmd.Substring(0, idx);
+		//	string value = cmd.Substring(idx + 1);
+		//	if (type.ToLower() == "color") {
+		//		RGBSpectrum color = Color(value);
+		//		return new PureXYZColorMaterialMap(color.ToXYZ());
+		//	}
+		//	else if (type.ToLower() == "img") {
+		//		throw new Exception("尚不支持图片贴图");
+		//	}
+		//	else {
+		//		throw new Exception("不支持的命令");
+		//	}
+		//}
 		private static RGBSpectrum Color(string cmd) {
 			string[] strs = cmd.Split(',');
 			RGBSpectrum color;
@@ -120,11 +137,11 @@ namespace ModelLoader {
 				string value = line.Substring(index + 1).Trim();
 				switch (property.ToLower()) {
 					case "basecolor":
-						result.BaseColor = MaterialMap(value);
+						result.BaseColor = MaterialMapXYZ(value);
 						break;
 					case "normal":
 						result.NormalMap.Enable = true;
-						result.NormalMap.NormalMap = MaterialMap(value);
+						result.NormalMap.NormalMap = MaterialMapRGB(value);
 						break;
 					case "roughness":
 						result.Roughness = float.Parse(value);
@@ -133,10 +150,10 @@ namespace ModelLoader {
 						result.Metallic.Metallic = float.Parse(value);
 						break;
 					case "metallic.intensitymap":
-						result.Metallic.IntensityMap = MaterialGrayMap(value);
+						result.Metallic.IntensityMap = MaterialMapRGB(value);
 						break;
 					case "metallic.metalliccolor":
-						result.Metallic.MetallicColorMap = MaterialMap(value);
+						result.Metallic.MetallicColorMap = MaterialMapXYZ(value);
 						break;
 					case "refraction": {
 						string[] values = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -149,14 +166,14 @@ namespace ModelLoader {
 					}
 					break;
 					case "refraction.intensitymap":
-						result.Refraction.IntensityMap = MaterialGrayMap(value);
+						result.Refraction.IntensityMap = MaterialMapRGB(value);
 						break;
 					case "light":
-						result.Light.Intensity = Color(value);
+						result.Light.Intensity = Color(value).ToXYZ();
 						result.Light.Enable = true;
 						break;
 					case "light.intensitymap":
-						result.Light.IntensityMap = MaterialMap(value);
+						result.Light.IntensityMap = MaterialMapXYZ(value);
 						result.Light.EnableMap = true;
 						break;
 					default:
@@ -167,14 +184,14 @@ namespace ModelLoader {
 			return result;
 		}
 		
-		public static (Scene, bool) LoadScene(string proPath) {
+		public static (Scene, bool) LoadScene(string proPath, ISkyBoxAble skyBox) {
 			bool readed = true;
 			string basePath = Path.GetDirectoryName(proPath);
 			string fname = Path.Combine(proPath);
 
 			string[] lines = File.ReadAllLines(fname);
 			HashSet<string> mtlFiles = new HashSet<string>();
-			Scene result = new Scene();
+			Scene result = new Scene(skyBox);
 			int linenum = 0;
 			try {
 				foreach (string line in lines) {
@@ -186,7 +203,7 @@ namespace ModelLoader {
 					if (cmds.Length != 3) {
 						throw new Exception("错误的行指令数量: " + fname);
 					}
-					SceneObjectA robj;
+					RenderObject robj;
 					switch (cmds[0]) {
 						case "mt": // mashtrigle
 							{

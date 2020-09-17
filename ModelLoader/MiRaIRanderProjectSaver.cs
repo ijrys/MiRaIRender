@@ -1,13 +1,13 @@
 ﻿using MiRaIRender.BaseType;
-using MiRaIRender.BaseType.LightSource;
 using MiRaIRender.BaseType.Materials;
 using MiRaIRender.BaseType.SceneObject;
+using MiRaIRender.BaseType.Spectrum;
+using MiRaIRender.Objects.LightSource;
+using MiRaIRender.Objects.SceneObject;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using Vector3f = System.Numerics.Vector3;
 using Vector2f = System.Numerics.Vector2;
+using Vector3f = System.Numerics.Vector3;
 
 namespace ModelLoader {
 	public static class MiRaIRanderProjectSaver {
@@ -15,13 +15,13 @@ namespace ModelLoader {
 			return color.R + "," + color.G + "," + color.B;
 		}
 		private static string MaterialMapDescription(IMaterialMapAble materialMap) {
-			if (materialMap.GetType() == typeof(PureColorMaterialMap)) {
-				return "color " + ColorDescription((materialMap as PureColorMaterialMap).BaseColor);
+			if (materialMap.GetType() == typeof(PureXYZColorMaterialMap)) {
+				return "color " + ColorDescription((materialMap as PureXYZColorMaterialMap).BaseColor.ToRGB());
 			}
-			else if (materialMap.GetType() == typeof(PureGrayMaterialMap)) {
-				RGBSpectrum c = new RGBSpectrum((materialMap as PureGrayMaterialMap).BaseGray);
-				return "color " + ColorDescription(c);
-			}
+			//else if (materialMap.GetType() == typeof(PureGrayMaterialMap)) {
+			//	RGBSpectrum c = new RGBSpectrum((materialMap as PureGrayMaterialMap).BaseGray);
+			//	return "color " + ColorDescription(c);
+			//}
 			return "";
 		}
 
@@ -48,7 +48,7 @@ namespace ModelLoader {
 						}
 					}
 					if (material.Light.Enable) {
-						sw.WriteLine("light=" + ColorDescription(material.Light.Intensity));
+						sw.WriteLine("light=" + ColorDescription(material.Light.Intensity.ToRGB()));
 						if (material.Light.EnableMap && material.Light.IntensityMap != null) {
 							sw.WriteLine("light.intensitymap=" + MaterialMapDescription(material.Light.IntensityMap));
 						}
@@ -96,7 +96,7 @@ namespace ModelLoader {
 					sw.AutoFlush = true;
 
 					int objcount = -1;
-					foreach (SceneObjectA obj in scene.Objects) {
+					foreach (RenderObject obj in scene.Objects) {
 						objcount++;
 						string fpath = Path.Combine(basePath, objcount + ".mrimtl");
 						SaveMaterial(obj.Material, fpath);

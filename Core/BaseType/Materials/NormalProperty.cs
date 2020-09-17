@@ -14,14 +14,14 @@ namespace MiRaIRender.BaseType.Materials {
 			set => _enable = value;
 		}
 
-		public IMaterialMapAble NormalMap;
+		public IMaterialMapAble<RGBSpectrum> NormalMap;
 
 		public Vector3f GetNormal(Vector2f xy) {
 			if (!Enable || NormalMap == null) {
 				return Vector3f.Zero;
 			}
 			RGBSpectrum color = NormalMap.Color(xy);
-			return Vector3f.Normalize(new Vector3f(color.R - 0.5f, color.B - 0.5f, color.G - 0.5f));
+			return Vector3f.Normalize(new Vector3f(color.R - 0.5f, color.G - 0.5f, color.B - 0.5f));
 		}
 	}
 }
